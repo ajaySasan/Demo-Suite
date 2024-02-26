@@ -1,24 +1,90 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, ChangeEvent, useEffect } from "react";
+import "./Global.scss";
+import { Header } from "./ui-layout/Header";
+import { Register } from "./demo-data/Register";
+import { Threats } from "./demo-data/Threats";
+import { Metrics } from "./demo-data/Metrics";
+import { PopUpAlert } from "./PopUpAlert";
+import MetricsTest from "./demo-data/MetricsTest";
+import { Devices } from "./demo-data/DevicesNew";
 
 function App() {
+  const [seeDetails, setSeeDetails] = useState<boolean>(false);
+  //const [demoDate, setDemoDate] = useState<string>("");
+  const [demoDate, setDemoDate] = useState<string>(
+    new Date().toISOString().substr(0, 10)
+  ); // Changes default date to today
+  const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
+  const [alertContent, setAlertContent] = useState<string>("");
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (alertWindow !== null) {
+      timer = setTimeout(() => {
+        setAlertWindow(null);
+      }, 2000);
+    }
+    return () => clearTimeout(timer);
+  }, [alertWindow]);
+
+  const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDemoDate(event.target.value);
+  };
+
+  const showAlert = (success: boolean, message: string) => {
+    setAlertWindow(success);
+    setAlertContent(message);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div>
+      <Header />
+      <div className="homePageContainer">
+        <div className="appMain">
+          <div className="demoDate">
+            <div className="inline">
+              <h2>Enter Demo Date</h2>
+            </div>
+            <div>
+              <i className="bi bi-calendar" />
+
+              <label>Demo Date:</label>
+              <i className="bi bi-calendar" />
+            </div>
+            <input
+              type="date"
+              placeholder="Demo Date"
+              value={demoDate}
+              onChange={handleDateChange}
+            />
+          </div>
+        </div>
+
+        <div className="demoButtons">
+          <MetricsTest demoDate={demoDate} showAlert={showAlert} />
+        </div>
+        <button
+          className="moreDetailsBtn"
+          onClick={() => {
+            setSeeDetails(!seeDetails);
+          }}
         >
-          Learn React
-        </a>
-      </header>
+          {seeDetails ? "Hide Details" : "More Details"}
+        </button>
+        <div className="content">
+          {seeDetails && (
+            <>
+              <Register showAlert={showAlert} />
+              <Devices showAlert={showAlert} />
+              <Threats demoDate={demoDate} showAlert={showAlert} />
+              <Metrics demoDate={demoDate} showAlert={showAlert} />
+            </>
+          )}
+        </div>
+      </div>
+      {alertWindow !== null && (
+        <PopUpAlert variable={alertContent} isSuccess={alertWindow} />
+      )}
     </div>
   );
 }
