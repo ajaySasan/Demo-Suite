@@ -664,6 +664,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
     <div>
       <input
         type="number"
+        className="deviceIdInput"
         value={userInputDeviceId}
         placeholder="Device ID"
         onChange={handleInputDeviceChange}
