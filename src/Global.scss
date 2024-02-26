@@ -34,7 +34,7 @@ body {
 }
 
 h1 {
-  font-size: 48px;
+  font-size: 45px;
   font-weight: 700;
   margin: 30px;
   color: var(--white);
@@ -262,5 +262,6 @@ button:active {
 
 .deviceIdInput {
   display: flex;
-  margin: 0 auto;
+  margin: 15px auto;
+  margin-top: 10px;
 }

@@ -255,7 +255,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
         // Filter the response to select only deviceIds between 16160 and 16175
         filteredIdsArray = response.data.filter((item) => {
           const deviceId = item.id;
-          return deviceId >= 16170 && deviceId <= 16175;
+          return deviceId;
         });
       }
 
@@ -500,7 +500,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
     {
       key: "fas_site",
       threatType: "File hosting site blocked",
-    },
+    }
   ];
 
   // Function to randomize threats
@@ -516,7 +516,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   };
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const numMetrics = 11; // DECLARES NUMBER OF METRICS TO BE POSTED EVERY 3 SECONDS
+    const numMetrics = 100; // DECLARES NUMBER OF METRICS TO BE POSTED EVERY 3 SECONDS
     const randomizeNum = randomNumBetween1And100();
     const totalPercentage = Object.values(initialThreatPercentages).reduce(
       (acc, val) => acc + val,
@@ -559,7 +559,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
         Object.entries(initialThreatPercentages).forEach(
           ([key, percentage]) => {
-            const numThreats = Math.floor((numMetrics * percentage) / 65);
+            const numThreats = Math.floor((numMetrics * percentage) / 98);
 
             for (let j = 0; j < numThreats; j++) {
               const randomDeviceId: any =

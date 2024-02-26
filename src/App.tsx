@@ -40,25 +40,7 @@ function App() {
     <div>
       <Header />
       <div className="homePageContainer">
-        <div className="appMain">
-          <div className="demoDate">
-            <div className="inline">
-              <h2>Enter Demo Date</h2>
-            </div>
-            <div>
-              <i className="bi bi-calendar" />
-
-              <label>Demo Date:</label>
-              <i className="bi bi-calendar" />
-            </div>
-            <input
-              type="date"
-              placeholder="Demo Date"
-              value={demoDate}
-              onChange={handleDateChange}
-            />
-          </div>
-        </div>
+        <div className="appMain"></div>
 
         <div className="demoButtons">
           <MetricsTest demoDate={demoDate} showAlert={showAlert} />
@@ -74,6 +56,23 @@ function App() {
         <div className="content">
           {seeDetails && (
             <>
+              <div className="demoDate">
+                <div className="inline">
+                  <h2>Enter Demo Date</h2>
+                </div>
+                <div>
+                  <i className="bi bi-calendar" />
+
+                  <label>Demo Date:</label>
+                  <i className="bi bi-calendar" />
+                </div>
+                <input
+                  type="date"
+                  placeholder="Demo Date"
+                  value={demoDate}
+                  onChange={handleDateChange}
+                />
+              </div>
               <Register showAlert={showAlert} />
               <Devices showAlert={showAlert} />
               <Threats demoDate={demoDate} showAlert={showAlert} />
