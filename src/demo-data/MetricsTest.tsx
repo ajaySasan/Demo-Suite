@@ -25,7 +25,6 @@ const header = {
   "auth-token": token,
 };
 
-
 interface DeviceIdMacAddress {
   deviceId: number;
   macAddress: string;
@@ -79,22 +78,22 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   });
 
   const initialThreatPercentages: { [key: string]: number } = {
-    "app_fw": 5,
-    "dev_fw": 2,
-    "mw_site": 10,
-    "dev_ab": 8,
-    "unauth": 2,
-    "app_blk": 3,
-    "data_leak": 6,
-    "dev_vuln": 24,
-    "c2_site": 1,
-    "ras_site": 12,
-    "ph_site": 2,
-    "bot_site": 13,
-    "sp_site": 1,
-    "ad_site": 2,
-    "fas_site": 9
-}
+    app_fw: 5,
+    dev_fw: 2,
+    mw_site: 10,
+    dev_ab: 8,
+    unauth: 2,
+    app_blk: 3,
+    data_leak: 6,
+    dev_vuln: 24,
+    c2_site: 1,
+    ras_site: 12,
+    ph_site: 2,
+    bot_site: 13,
+    sp_site: 1,
+    ad_site: 2,
+    fas_site: 9,
+  };
 
   // const handleThreatPercentageChange = (
   //   event: React.ChangeEvent<HTMLInputElement>,
@@ -238,68 +237,87 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   const [numIds, setNumIds] = useState<number>();
   const [idsArray, setIdsArray] = useState<any[]>([]);
   const [idsArrayMetrics, setIdsArrayMetrics] = useState<any[]>([]);
+  const [userInputDeviceId, setUserInputDeviceId] = useState<
+    number | undefined
+  >();
 
-  const fetchData = async () => {
+  const fetchData = async (deviceId?: number) => {
     try {
       const response = await axios.get<any[]>(`${apiURL}${deviceIdEndpoint}`, {
         headers: header,
       });
-  
-      // Filter the response to select only deviceIds between 16160 and 16175
-      const filteredIdsArray = response.data.filter((item) => {
-        const deviceId = item.id;
-        return deviceId >= 16170 && deviceId <= 16170;
-      });
-  
+
+      let filteredIdsArray = response.data;
+
+      if (deviceId) {
+        filteredIdsArray = response.data.filter((item) => item.id === deviceId);
+      } else {
+        // Filter the response to select only deviceIds between 16160 and 16175
+        filteredIdsArray = response.data.filter((item) => {
+          const deviceId = item.id;
+          return deviceId >= 16170 && deviceId <= 16175;
+        });
+      }
+
       // Map the filtered results to required format
-      const idsArray = filteredIdsArray.map((item) => ({
+      const formattedIdsArray = filteredIdsArray.map((item) => ({
         deviceId: item.id,
         mac: item.macAddress,
       }));
-  
-      setIdsArray(idsArray);
+
+      setIdsArray(formattedIdsArray);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, [numIds]); // Fetch data whenever numIds changes
+    if (userInputDeviceId !== undefined) {
+      fetchData(userInputDeviceId);
+    } else {
+      fetchData();
+    }
+  }, [userInputDeviceId, numIds]); // Fetch data whenever numIds or userInputDeviceId changes
+
+  const handleInputDeviceChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setUserInputDeviceId(parseInt(event.target.value));
+  };
 
   // Metrics Device ID - LIMIT OF 12
 
- const fetchLimitedDeviceIds = async () => {
-  try {
-    const response = await axios.get<any[]>(`${apiURL}${deviceIdEndpoint}`, {
-      headers: header,
-    });
+  // const fetchLimitedDeviceIds = async () => {
+  //   try {
+  //     const response = await axios.get<any[]>(`${apiURL}${deviceIdEndpoint}`, {
+  //       headers: header,
+  //     });
 
-    // Filter the response to select only deviceIds between 16160 and 16175
-    const filteredIdsArray = response.data.filter((item) => {
-      const deviceId = item.id;
-      return deviceId >= 16170 && deviceId <= 16170;
-    });
+  //     // Filter the response to select only deviceIds between 16160 and 16175
+  //     const filteredIdsArray = response.data.filter((item) => {
+  //       const deviceId = item.id;
+  //       return deviceId >= 16170 && deviceId <= 16170;
+  //     });
 
-    // Map the filtered results to required format
-    const limitedIdsArray = filteredIdsArray.map((item) => ({
-      deviceId: item.id,
-      mac: item.macAddress,
-    }));
+  //     // Map the filtered results to required format
+  //     const limitedIdsArray = filteredIdsArray.map((item) => ({
+  //       deviceId: item.id,
+  //       mac: item.macAddress,
+  //     }));
 
-    setIdsArrayMetrics(limitedIdsArray); // Update state with limited device IDs for metrics
-  } catch (error) {
-    console.error("Error fetching limited data:", error);
-  }
-};
+  //     setIdsArrayMetrics(limitedIdsArray); // Update state with limited device IDs for metrics
+  //   } catch (error) {
+  //     console.error("Error fetching limited data:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchLimitedDeviceIds();
-  }, []);
+  // useEffect(() => {
+  //   fetchLimitedDeviceIds();
+  // }, []);
 
-  const handleDeviceIdChange = (event: any) => {
-    setNumIds(parseInt(event.target.value, 10));
-  };
+  // const handleDeviceIdChange = (event: any) => {
+  //   setNumIds(parseInt(event.target.value, 10));
+  // };
 
   // Metric Data
 
@@ -519,7 +537,8 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       dateRatio.forEach((metricDate) => {
         for (let i = 0; i < numMetrics; i++) {
           const randomDeviceId: any =
-            idsArrayMetrics[Math.floor(Math.random() * idsArrayMetrics.length)];
+            //idsArrayMetrics[Math.floor(Math.random() * idsArrayMetrics.length)];
+            idsArray[Math.floor(Math.random() * idsArray.length)];
 
           const updatedAtDate = updatedAt(new Date(metricDate));
 
@@ -539,26 +558,28 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
           });
         }
 
-        Object.entries(initialThreatPercentages).forEach(([key, percentage]) => {
-          const numThreats = Math.floor((numMetrics * percentage) / 65);
+        Object.entries(initialThreatPercentages).forEach(
+          ([key, percentage]) => {
+            const numThreats = Math.floor((numMetrics * percentage) / 65);
 
-          for (let j = 0; j < numThreats; j++) {
-            const randomDeviceId: any =
-              idsArray[Math.floor(Math.random() * idsArray.length)];
+            for (let j = 0; j < numThreats; j++) {
+              const randomDeviceId: any =
+                idsArray[Math.floor(Math.random() * idsArray.length)];
 
-            const threat = {
-              deviceId: randomDeviceId.deviceId,
-              threatType: key,
-              key: key,
-              description: `demo.${key}.com blocked by BlackDice Shield`,
-              action: "WARN:BLOCK_SITE",
-              createdAt: metricDate,
-              updatedAt: metricDate,
-            };
+              const threat = {
+                deviceId: randomDeviceId.deviceId,
+                threatType: key,
+                key: key,
+                description: `demo.${key}.com blocked by BlackDice Shield`,
+                action: "WARN:BLOCK_SITE",
+                createdAt: metricDate,
+                updatedAt: metricDate,
+              };
 
-            threats.push(threat);
+              threats.push(threat);
+            }
           }
-        });
+        );
       });
       console.log(metrics);
       console.log(threats); // Add this line for testing purposes
@@ -641,6 +662,13 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   return (
     <div>
+      <input
+        type="number"
+        value={userInputDeviceId}
+        placeholder="Device ID"
+        onChange={handleInputDeviceChange}
+      />
+
       <button type="button" onClick={startDemoLoop}>
         START DEMO
       </button>
