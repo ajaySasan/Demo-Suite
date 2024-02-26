@@ -537,7 +537,6 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       dateRatio.forEach((metricDate) => {
         for (let i = 0; i < numMetrics; i++) {
           const randomDeviceId: any =
-            //idsArrayMetrics[Math.floor(Math.random() * idsArrayMetrics.length)];
             idsArray[Math.floor(Math.random() * idsArray.length)];
 
           const updatedAtDate = updatedAt(new Date(metricDate));
@@ -566,17 +565,24 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
               const randomDeviceId: any =
                 idsArray[Math.floor(Math.random() * idsArray.length)];
 
-              const threat = {
-                deviceId: randomDeviceId.deviceId,
-                threatType: key,
-                key: key,
-                description: `demo.${key}.com blocked by BlackDice Shield`,
-                action: "WARN:BLOCK_SITE",
-                createdAt: metricDate,
-                updatedAt: metricDate,
-              };
+              // Find the matching threat object
+              const matchingThreat = threat.find((item) => item.key === key);
 
-              threats.push(threat);
+              if (matchingThreat) {
+                const threat = {
+                  deviceId: randomDeviceId.deviceId,
+                  threatType: matchingThreat.threatType, // Assign the matching threatType
+                  key: key,
+                  description: `demo.${key}.com blocked by BlackDice Shield`,
+                  action: "WARN:BLOCK_SITE",
+                  createdAt: metricDate,
+                  updatedAt: metricDate,
+                };
+
+                threats.push(threat);
+              } else {
+                console.log(`No matching threat found for key: ${key}`);
+              }
             }
           }
         );
