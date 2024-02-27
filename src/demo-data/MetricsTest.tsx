@@ -516,7 +516,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   };
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const numMetrics = 100; // DECLARES NUMBER OF METRICS TO BE POSTED EVERY 3 SECONDS
+    const numMetrics = 10; // DECLARES NUMBER OF METRICS TO BE POSTED EVERY 3 SECONDS
     const randomizeNum = randomNumBetween1And100();
     const totalPercentage = Object.values(initialThreatPercentages).reduce(
       (acc, val) => acc + val,
@@ -538,7 +538,8 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
         for (let i = 0; i < numMetrics; i++) {
           const randomDeviceId: any =
             idsArray[Math.floor(Math.random() * idsArray.length)];
-
+            const randomDate: any = metricDate[i];
+            console.log(`Todays date is ${metricDate}`);
           const updatedAtDate = updatedAt(new Date(metricDate));
 
           metrics.push({
