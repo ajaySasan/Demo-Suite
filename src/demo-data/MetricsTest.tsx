@@ -538,8 +538,6 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
         for (let i = 0; i < numMetrics; i++) {
           const randomDeviceId: any =
             idsArray[Math.floor(Math.random() * idsArray.length)];
-            const randomDate: any = metricDate[i];
-            console.log(`Todays date is ${metricDate}`);
           const updatedAtDate = updatedAt(new Date(metricDate));
 
           metrics.push({

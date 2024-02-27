@@ -41,8 +41,8 @@ export const Threats: React.FC<ThreatsProps> = ({ demoDate, showAlert }) => {
 
   const [threatDataNum, setThreatDate] = useState<number>(0);
   const [dateFilter, setDateFilter] = useState<DateFilter>({
-    past24Hours: 10,
-    past7Days: 20,
+    past24Hours: 0,
+    past7Days: 30,
     past30Days: 30,
     past60Days: 40,
   });
