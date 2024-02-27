@@ -30,7 +30,9 @@
 }
 
 body {
-  background: var(--ui-background);
+  background: var(--ui-background) center center fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1 {

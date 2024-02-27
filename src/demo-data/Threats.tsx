@@ -6,7 +6,7 @@ const apiURL = "https://apidev.blackdice.io";
 const endpointThreat = "/svc/mock/create-many-threats";
 const deviceIdEndpoint = "/pa/devices/all"; // may need to change !?!?!?!?!?
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTIwLCJzZXNzaW9uVG9rZW4iOnsiaWQiOjcwNTgsInNlc3Npb24iOiJjNzEzNTAxNTNkOTBhMGI1NDY1M2U1M2I2ZjE4MGMyMCIsInUiOiIyYTI1YTQyYTQ5MzEwY2RjZjAzMzM1OGMzYWY5YTk1MDFiMGUwOTEyIiwidXBkYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIiwiY3JlYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIn0sImlhdCI6MTcwNzkxNTQzNH0.GBDe1PNnqYfWYae1XQi74rv2qykN9fCzxGPYbgafrfg";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTYzLCJzZXNzaW9uVG9rZW4iOnsiaWQiOjcyNDEsInNlc3Npb24iOiIzMGMzMDc2NDcyZjIwMDIzMDRiNmE5OGYzYjRmZGZhNSIsInUiOiI5YmQ3YTcyMGQzN2FkZjUyZDI4YjJlYjY0ZTlmZTBlMzMzMWZiODk4IiwidXBkYXRlZEF0IjoiMjAyNC0wMi0yM1QxMzoyODoxOS42OTlaIiwiY3JlYXRlZEF0IjoiMjAyNC0wMi0yM1QxMzoyODoxOS42OTlaIn0sImlhdCI6MTcwODY5NDg5OX0.LRa-nCJUd_AuoUVyGClwhmX_ujYxkwTGdrjzjLk_lWg";
 
 const header = {
   "auth-token": token,
