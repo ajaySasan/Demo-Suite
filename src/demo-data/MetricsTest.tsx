@@ -364,10 +364,10 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   // Updated at Time
 
-  const updatedAt = (createdAt: Date) => {
+  const updatedAt = (createdAtDate: Date) => {
     const past24Hours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
     const randomUpdate = Math.floor(Math.random() * past24Hours);
-    const updatedAtDate = new Date(createdAt.getTime() + randomUpdate);
+    const updatedAtDate = new Date(createdAtDate.getTime() + randomUpdate);
 
     return updatedAtDate.toISOString().slice(0, 19).replace("T", " ");
   };
@@ -540,7 +540,8 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
         // Generate metrics
         const randomDeviceId: any = idsArray[Math.floor(Math.random() * idsArray.length)];
         const createdAtDate = generateRandomDates(metricData);
-    
+        const updatedAtDate = updatedAt(new Date(createdAtDate));
+
         metrics.push({
             deviceId: randomDeviceId.deviceId,
             mac: randomDeviceId.mac,
@@ -550,7 +551,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
             txBytes: txByte(),
             rxBytes: rxByte(),
             createdAt: createdAtDate,
-            updatedAt: createdAtDate, // Assuming updatedAt depends on createdAt
+            updatedAt: updatedAtDate, // Assuming updatedAt depends on createdAt
             rxBitRateAverage: randomRxBitRateAverage(),
             txBitRateAverage: randomTxBitRateAverage(),
             signalNum: signalNum(),
@@ -566,7 +567,8 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
             const randomThreat = randomizeThreat(threatIndex);
             const createdAtDate = generateRandomDates(metricData);
             const randomDeviceId: any = idsArray[Math.floor(Math.random() * idsArray.length)];
-    
+            const updatedAtDate = updatedAt(new Date(createdAtDate));
+
             if (randomThreat) {
                 const threat = {
                     deviceId: randomDeviceId.deviceId,
@@ -575,9 +577,9 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
                     description: `demo.${randomThreat.key}.com blocked by BlackDice Shield`,
                     action: "WARN:BLOCK_SITE",
                     createdAt: createdAtDate,
-                    updatedAt: createdAtDate, // Assuming updatedAt depends on createdAt
+                    updatedAt: updatedAtDate, // Assuming updatedAt depends on createdAt
                 };
-                console.log(createdAtDate);
+                //console.log(createdAtDate);
 
                 threats.push(threat);
             } else {
