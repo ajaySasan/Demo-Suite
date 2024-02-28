@@ -275,10 +275,33 @@ button:active {
   font-weight: 500;
   
 }
+@keyframes pulse-animation {
+  0% {
+    background-color: var(--neon-green);
+  }
+  50% {
+    background-color: var(--green-text);
+  }
+  100% {
+    background-color: var(--neon-green);
+  }
+}
 .neon-green {
-  background: var(--neon-green);
+  animation: pulse-animation 2s infinite;
+
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 .warning-red {
-  background: var(--warning-red-background);
+  /* Your existing styles for the warning message */
+  background-image: var(--warning-red-background);
+  animation: fade-out 7s forwards; /* Play the animation and keep the final state */
 }

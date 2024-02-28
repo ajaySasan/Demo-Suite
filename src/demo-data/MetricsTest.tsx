@@ -678,7 +678,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
     setDemoMessage("Demo has begun");
 
     console.log("Entering Demo mode");
-    const newInterval = setInterval(handleSubmit, 1000); // Call handleSubmit every 5 seconds
+    const newInterval = setInterval(handleSubmit, 4000); // Call handleSubmit every 5 seconds
     setDemoInterval(newInterval); // Store the interval ID in state
 
     // Stop the demo loop after 60 minutes
@@ -699,7 +699,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       setDemoMessage("Demo has stopped");
       setTimeout(() => {
         setDemoMessage(""); // Clear the message after 5 seconds
-      }, 5000);
+      }, 8000);
     }
   };
 
