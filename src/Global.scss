@@ -20,7 +20,6 @@
   --neon-green: linear-gradient(90deg, #21f24f, #0ea8bd);
   --warning-red-background: linear-gradient(90deg, #ff4040, #d63693);
   --demo-date: linear-gradient(90deg, #7f808f, #63565e);
-
 }
 
 * {
@@ -134,7 +133,7 @@ label {
 }
 
 .demoDate {
-background: var(--demo-date) !important;
+  background: var(--demo-date) !important;
 }
 
 .createAccount,
@@ -266,4 +265,20 @@ button:active {
   display: flex;
   margin: 15px auto;
   margin-top: 10px;
+}
+
+.message {
+  width: 260px;
+  padding: 20px;
+  border-radius: 30px;
+  margin: 10px auto;
+  font-weight: 500;
+  
+}
+.neon-green {
+  background: var(--neon-green);
+}
+
+.warning-red {
+  background: var(--warning-red-background);
 }

@@ -653,6 +653,10 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   // Returns JSX
 
+  // Demo message
+
+  const [demoMessage, setDemoMessage] = useState<string>("");
+
   // Start the demo loop
   const [demoRunning, setDemoRunning] = useState<boolean>(false);
   let interval: NodeJS.Timeout;
@@ -662,6 +666,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   const startDemo: any = {
     preventDefault: () => {},
+
     target: {
       value: "",
     },
@@ -670,6 +675,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   const startDemoLoop = () => {
     setDemoRunning(true);
     handleSubmit(startDemo);
+    setDemoMessage("Demo has begun");
 
     console.log("Entering Demo mode");
     const newInterval = setInterval(handleSubmit, 1000); // Call handleSubmit every 5 seconds
@@ -690,6 +696,10 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       setDemoRunning(false);
       console.log("Demo stopped manually.");
       showAlert(false, "Demo Stopped");
+      setDemoMessage("Demo has stopped");
+      setTimeout(() => {
+        setDemoMessage(""); // Clear the message after 5 seconds
+      }, 5000);
     }
   };
 
@@ -709,6 +719,19 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       <button type="button" onClick={stopDemoLoop}>
         STOP DEMO
       </button>
+      {demoMessage && (
+        <p
+          className={`message ${
+            demoMessage.includes("begun")
+              ? "neon-green"
+              : demoMessage.includes("stopped")
+              ? "warning-red"
+              : ""
+          }`}
+        >
+          {demoMessage}
+        </p>
+      )}
     </div>
   );
 };
