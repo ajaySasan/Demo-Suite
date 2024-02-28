@@ -17,7 +17,7 @@ interface DevicesProps {
 }
 
 let numOfHaandles = 700
-const getHaandleId = `/op/16/cpe_table?size=${numOfHaandles}&sort=id&order=desc`; // CHANGE TO HAANDLE I CREATE
+const getHaandleId = `/op/17/cpe_table?size=${numOfHaandles}&sort=id&order=desc`; // CHANGE TO HAANDLE I CREATE
 
 const token =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTIwLCJzZXNzaW9uVG9rZW4iOnsiaWQiOjcwNTgsInNlc3Npb24iOiJjNzEzNTAxNTNkOTBhMGI1NDY1M2U1M2I2ZjE4MGMyMCIsInUiOiIyYTI1YTQyYTQ5MzEwY2RjZjAzMzM1OGMzYWY5YTk1MDFiMGUwOTEyIiwidXBkYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIiwiY3JlYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIn0sImlhdCI6MTcwNzkxNTQzNH0.GBDe1PNnqYfWYae1XQi74rv2qykN9fCzxGPYbgafrfg";
