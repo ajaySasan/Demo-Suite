@@ -232,16 +232,17 @@ export const Register: React.FC<RegisterProps> = ({ showAlert }) => {
           email,
           pass,
           serialNumber: serialNum,
+          referer: "dev.blackdice.io"
         };
 
         const apiURL = "https://apidev.blackdice.io";
         const endpointThreat = "/pa/auth/register";
 
         try {
-          // const response = await axios.post(apiURL + endpointThreat, userData )
-          const response = await axios.post(apiURL + endpointThreat, userData, {
-            headers: { referer: "dev.blackdice.io" },
-          });
+          const response = await axios.post(apiURL + endpointThreat, userData )
+          // const response = await axios.post(apiURL + endpointThreat, userData, {
+          //   headers: { referer: "dev.blackdice.io" },
+          // });
           console.log(response.data);
 
           if (response.status >= 200 && response.status < 300) {
