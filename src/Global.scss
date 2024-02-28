@@ -214,18 +214,20 @@ button:active {
   top: 20px;
   right: 20px;
   align-items: center;
-  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  //box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
   z-index: 9999;
   border-radius: 30px;
   padding: 5px 10px;
 }
 
-.popUpAlert.success {
-  background: var(--neon-green);
+.popUpAlert.success, .neon-green {
+  animation: pulse-animation 2s infinite;
 }
 
-.popUpAlert.error {
+.popUpAlert.error, .warning-red {
   background: var(--warning-red-background);
+  animation: fade-out 5s forwards; /* Play the animation and keep the final state */
+
 }
 
 .popUpAlert .alertGood,
@@ -273,7 +275,6 @@ button:active {
   border-radius: 30px;
   margin: 10px auto;
   font-weight: 500;
-  
 }
 @keyframes pulse-animation {
   0% {
@@ -286,10 +287,23 @@ button:active {
     background-color: var(--neon-green);
   }
 }
-.neon-green {
-  animation: pulse-animation 2s infinite;
 
+@keyframes pulse-animation-start {
+  0% {
+    background-color: var(--orange-background); /* Start with orange */
+  }
+  50% {
+    background-color: goldenrod; /* Midway to yellow */
+  }
+  100% {
+    background-color: var(--orange-background); /* End with orange */
+  }
 }
+
+.amber-alert {
+  animation: pulse-animation-start 2s infinite;
+}
+
 
 @keyframes fade-out {
   0% {
@@ -300,8 +314,4 @@ button:active {
   }
 }
 
-.warning-red {
-  /* Your existing styles for the warning message */
-  background-image: var(--warning-red-background);
-  animation: fade-out 7s forwards; /* Play the animation and keep the final state */
-}
+

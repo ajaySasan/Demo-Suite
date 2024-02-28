@@ -19,11 +19,6 @@ function App() {
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (alertWindow !== null) {
-      timer = setTimeout(() => {
-        setAlertWindow(null);
-      }, 2000);
-    }
     return () => clearTimeout(timer);
   }, [alertWindow]);
 

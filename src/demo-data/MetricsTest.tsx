@@ -699,7 +699,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       setDemoMessage("Demo has stopped");
       setTimeout(() => {
         setDemoMessage(""); // Clear the message after 5 seconds
-      }, 8000);
+      }, 5000);
     }
   };
 
