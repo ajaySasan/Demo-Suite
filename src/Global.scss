@@ -279,31 +279,19 @@ button:active {
 @keyframes pulse-animation {
   0% {
     background-color: var(--neon-green);
+    opacity: 1; /* Start with full opacity */
+
   }
   50% {
     background-color: var(--green-text);
+
   }
   100% {
     background-color: var(--neon-green);
+    opacity: 0; /* Gradually fade out to completely transparent */
+
   }
 }
-
-@keyframes pulse-animation-start {
-  0% {
-    background-color: var(--orange-background); /* Start with orange */
-  }
-  50% {
-    background-color: goldenrod; /* Midway to yellow */
-  }
-  100% {
-    background-color: var(--orange-background); /* End with orange */
-  }
-}
-
-.amber-alert {
-  animation: pulse-animation-start 2s infinite;
-}
-
 
 @keyframes fade-out {
   0% {
