@@ -107,10 +107,10 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   const [threatDataNum, setThreatDate] = useState<number>(0);
   const [dateFilter, setDateFilter] = useState<DateFilter>({
-    past24Hours: 10,
+    past24Hours: 5,
     past7Days: 20,
     past30Days: 30,
-    past60Days: 40,
+    past60Days: 45,
   });
 
   // Percentages
@@ -224,11 +224,6 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       formatDate(random60Days(date, past30Days))
     );
 
-    // console.log(dates24Hours);
-    // console.log(dates7Days);
-    // console.log(dates30Days);
-    // console.log(dates60Days);
-
     const allDates = [
       ...dates24Hours,
       ...dates7Days,
@@ -236,14 +231,9 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       ...dates60Days,
     ].slice(0, totalResult);
 
-
     return allDates;
   };
-  
 
-  // console.log(datePercentages(10))
-// create a function to randomly select dates based on their percentages! ref to dateFilter.
-  
   const [numIds, setNumIds] = useState<number>();
   const [idsArray, setIdsArray] = useState<any[]>([]);
   const [idsArrayMetrics, setIdsArrayMetrics] = useState<any[]>([]);
@@ -524,34 +514,33 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   const randomNumBetween1And100 = () => {
     return Math.floor(Math.random() * 100) + 1;
   };
-  
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const numMetrics = 12; // Number of metrics to be posted every 3 seconds
+    const numMetrics = 50; // DECLARES NUMBER OF METRICS TO BE POSTED EVERY 3 SECONDS
+    const randomizeNum = randomNumBetween1And100();
     const totalPercentage = Object.values(initialThreatPercentages).reduce(
       (acc, val) => acc + val,
       0
     );
-  
+
     if (totalPercentage !== 100) {
       alert("Total percentage must equal 100");
       return; // Exit the function if total percentage is not 100
     }
-  
+
     if (!metricData) {
       alert("Enter the amount of Metric Data you want to populate");
     } else {
       const metrics: Metric[] = [];
       const threats: threats[] = [];
-  
+
       for (let i = 0; i < numMetrics; i++) {
-        // Generate metrics
+        // Calculate dateRatio for each iteration
         const dateRatio = datePercentages(metricData);
         dateRatio.forEach((metricDate) => {
           const randomDeviceId: any =
             idsArray[Math.floor(Math.random() * idsArray.length)];
           const updatedAtDate = updatedAt(new Date(metricDate));
-          //console.log(metricDate);
-  
+
           metrics.push({
             deviceId: randomDeviceId.deviceId,
             mac: randomDeviceId.mac,
@@ -567,44 +556,42 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
             signalNum: signalNum(),
           });
         });
+
+        Object.entries(initialThreatPercentages).forEach(
+          ([key, percentage]) => {
+            const numThreats = Math.floor((numMetrics * percentage) / 100);
+            // Calculate dateRatio for each iteration
+            const dateRatio = datePercentages(metricData);
+
+            dateRatio.forEach((metricDate) => {
+              const randomDeviceId: any =
+                idsArray[Math.floor(Math.random() * idsArray.length)];
+
+              const matchingThreat = threat.find((item) => item.key === key);
+
+              if (matchingThreat) {
+                const threat = {
+                  deviceId: randomDeviceId.deviceId,
+                  threatType: matchingThreat.threatType,
+                  key: key,
+                  description: `demo.${key}.com blocked by BlackDice Shield`,
+                  action: "WARN:BLOCK_SITE",
+                  createdAt: metricDate,
+                  updatedAt: metricDate,
+                };
+
+                threats.push(threat);
+              } else {
+                console.log(`No matching threat found for key: ${key}`);
+              }
+            });
+          }
+        );
       }
-  
-      // Generate threats based on percentages
-      Object.entries(initialThreatPercentages).forEach(([key, percentage]) => {
-        const numThreats = Math.floor((numMetrics * percentage) / 50);
-        const threatIndex = threat.filter((item) => item.key === key);
-  
-        for (let i = 0; i < numThreats; i++) {
-          const randomThreat = randomizeThreat(threatIndex);
-          const dateRatio = datePercentages(metricData);
-  
-          dateRatio.forEach((metricDate) => {
-            const randomDeviceId: any =
-              idsArray[Math.floor(Math.random() * idsArray.length)];
-  
-            if (randomThreat) {
-              const threat = {
-                deviceId: randomDeviceId.deviceId,
-                threatType: randomThreat.threatType,
-                key: randomThreat.key,
-                description: `demo.${randomThreat.key}.com blocked by BlackDice Shield`,
-                action: "WARN:BLOCK_SITE",
-                createdAt: metricDate,
-                updatedAt: metricDate,
-              };
-  
-              threats.push(threat);
-            } else {
-              console.log(`No matching threat found for key: ${key}`);
-            }
-          });
-        }
-      });
-  
+
       console.log(metrics);
       console.log(threats);
-  
-      // Post metrics
+      console.log(dateRatio);
       axios
         .post(apiURL + endpointMetrics, {
           metrics: metrics,
@@ -621,8 +608,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
           console.log(err);
           showAlert(false, "Error creating Threats and Metrics ");
         });
-  
-      // Post threats
+
       axios
         .post(apiURL + endpointThreat, {
           threats: threats,
