@@ -35,8 +35,8 @@ interface threats {
   key: string;
   description: string;
   action: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: any;
+  updatedAt: any;
 }
 interface Metric {
   deviceId: number;
@@ -46,8 +46,8 @@ interface Metric {
   rxBitrate: number;
   txBytes: number;
   rxBytes: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: any;
+  updatedAt: any;
   rxBitRateAverage: string;
   txBitRateAverage: string;
   signalNum: number;
@@ -193,52 +193,45 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   // Splits date categories into percentages
 
-  const datePercentages = (totalResult: number) => {
-    const numDates24Hours = Math.ceil(dateFilter.past24Hours * totalResult);
-    const numDates7Days = Math.ceil(dateFilter.past7Days * totalResult);
-    const numDates30Days = Math.ceil(dateFilter.past30Days * totalResult);
-    const numDates60Days = Math.ceil(dateFilter.past60Days * totalResult);
-
+  const generateRandomDates = (totalResult: number) => {
+    const numDates24Hours = Math.ceil((dateFilter.past24Hours / 100) * totalResult);
+    const numDates7Days = Math.ceil((dateFilter.past7Days / 100) * totalResult);
+    const numDates30Days = Math.ceil((dateFilter.past30Days / 100) * totalResult);
+    const numDates60Days = Math.ceil((dateFilter.past60Days / 100) * totalResult);
+  
+    const allDates = [] as string[];
+  
     const formatDate = (date: Date) => {
       return date.toISOString().slice(0, 19).replace("T", " ");
     };
-
-    const date = new Date(demoDate); //Declares todays date.
-    //const date = new Date(demoDate);
-
-    const past24Hours = randomDate24Hours(date);
-    const past7Days = random7Days(date, past24Hours);
-    const past30Days = random30Days(date, past7Days);
-    const past60Days = random30Days(date, past30Days);
-
+  
+    const demoDate = new Date(); //Declares today's date.
+  
+    const past24Hours = new Date(demoDate.getTime() - (24 * 60 * 60 * 1000));
+    const past7Days = new Date(demoDate.getTime() - (7 * 24 * 60 * 60 * 1000));
+    const past30Days = new Date(demoDate.getTime() - (30 * 24 * 60 * 60 * 1000));
+    const past60Days = new Date(demoDate.getTime() - (60 * 24 * 60 * 60 * 1000));
+  
     const dates24Hours = Array.from({ length: numDates24Hours }, () =>
-      formatDate(randomDate24Hours(date))
+      formatDate(randomDate24Hours(demoDate))
     );
     const dates7Days = Array.from({ length: numDates7Days }, () =>
-      formatDate(random7Days(date, past24Hours))
+      formatDate(random7Days(demoDate, past24Hours))
     );
     const dates30Days = Array.from({ length: numDates30Days }, () =>
-      formatDate(random30Days(date, past7Days))
+      formatDate(random30Days(demoDate, past7Days))
     );
     const dates60Days = Array.from({ length: numDates60Days }, () =>
-      formatDate(random60Days(date, past30Days))
+      formatDate(random60Days(demoDate, past30Days))
     );
-
-    // console.log(dates24Hours);
-    // console.log(dates7Days);
-    // console.log(dates30Days);
-    // console.log(dates60Days);
-
-    const allDates = [
-      ...dates24Hours,
-      ...dates7Days,
-      ...dates30Days,
-      ...dates60Days,
-    ].slice(0, totalResult);
-
-
-    return allDates;
+  
+    allDates.push(...dates24Hours, ...dates7Days, ...dates30Days, ...dates60Days);
+  
+    // Select a random date from allDates
+    const randomIndex = Math.floor(Math.random() * allDates.length);
+    return allDates[randomIndex];
   };
+  
   
 
   // console.log(datePercentages(10))
@@ -406,7 +399,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
     console.log(metricJson);
   };
 
-  const dateRatio = datePercentages(metricData);
+  const dateRatio = generateRandomDates(metricData);
 
   // Expanded
 
@@ -545,14 +538,10 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   
       for (let i = 0; i < numMetrics; i++) {
         // Generate metrics
-        const dateRatio = datePercentages(metricData);
-        dateRatio.forEach((metricDate) => {
-          const randomDeviceId: any =
-            idsArray[Math.floor(Math.random() * idsArray.length)];
-          const updatedAtDate = updatedAt(new Date(metricDate));
-          //console.log(metricDate);
-  
-          metrics.push({
+        const randomDeviceId: any = idsArray[Math.floor(Math.random() * idsArray.length)];
+        const createdAtDate = generateRandomDates(metricData);
+    
+        metrics.push({
             deviceId: randomDeviceId.deviceId,
             mac: randomDeviceId.mac,
             signal: randomSignal(),
@@ -560,49 +549,44 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
             rxBitrate: rxBitrate(),
             txBytes: txByte(),
             rxBytes: rxByte(),
-            createdAt: metricDate,
-            updatedAt: updatedAtDate,
+            createdAt: createdAtDate,
+            updatedAt: createdAtDate, // Assuming updatedAt depends on createdAt
             rxBitRateAverage: randomRxBitRateAverage(),
             txBitRateAverage: randomTxBitRateAverage(),
             signalNum: signalNum(),
-          });
         });
-      }
-  
-      // Generate threats based on percentages
-      Object.entries(initialThreatPercentages).forEach(([key, percentage]) => {
+    }
+    
+    // Generate threats based on percentages
+    Object.entries(initialThreatPercentages).forEach(([key, percentage]) => {
         const numThreats = Math.floor((numMetrics * percentage) / 50);
         const threatIndex = threat.filter((item) => item.key === key);
-  
+    
         for (let i = 0; i < numThreats; i++) {
-          const randomThreat = randomizeThreat(threatIndex);
-          const dateRatio = datePercentages(metricData);
-  
-          dateRatio.forEach((metricDate) => {
-            const randomDeviceId: any =
-              idsArray[Math.floor(Math.random() * idsArray.length)];
-  
+            const randomThreat = randomizeThreat(threatIndex);
+            const createdAtDate = generateRandomDates(metricData);
+            const randomDeviceId: any = idsArray[Math.floor(Math.random() * idsArray.length)];
+    
             if (randomThreat) {
-              const threat = {
-                deviceId: randomDeviceId.deviceId,
-                threatType: randomThreat.threatType,
-                key: randomThreat.key,
-                description: `demo.${randomThreat.key}.com blocked by BlackDice Shield`,
-                action: "WARN:BLOCK_SITE",
-                createdAt: metricDate,
-                updatedAt: metricDate,
-              };
-  
-              threats.push(threat);
+                const threat = {
+                    deviceId: randomDeviceId.deviceId,
+                    threatType: randomThreat.threatType,
+                    key: randomThreat.key,
+                    description: `demo.${randomThreat.key}.com blocked by BlackDice Shield`,
+                    action: "WARN:BLOCK_SITE",
+                    createdAt: createdAtDate,
+                    updatedAt: createdAtDate, // Assuming updatedAt depends on createdAt
+                };
+                console.log(createdAtDate);
+
+                threats.push(threat);
             } else {
-              console.log(`No matching threat found for key: ${key}`);
+                console.log(`No matching threat found for key: ${key}`);
             }
-          });
         }
-      });
-  
-      console.log(metrics);
-      console.log(threats);
+    });
+    console.log(metrics);
+    console.log(threats);
   
       // Post metrics
       axios
