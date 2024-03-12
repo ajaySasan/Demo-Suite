@@ -14,19 +14,21 @@ interface Devices {
 
 interface DevicesProps {
   showAlert: (success: boolean, message: string) => void;
+  operatorId: any;
 }
 
-let numOfHaandles = 700
-const getHaandleId = `/op/17/cpe_table?size=${numOfHaandles}&sort=id&order=desc`; // CHANGE TO HAANDLE I CREATE
+let numOfHaandles = 300;
 
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTIwLCJzZXNzaW9uVG9rZW4iOnsiaWQiOjcwNTgsInNlc3Npb24iOiJjNzEzNTAxNTNkOTBhMGI1NDY1M2U1M2I2ZjE4MGMyMCIsInUiOiIyYTI1YTQyYTQ5MzEwY2RjZjAzMzM1OGMzYWY5YTk1MDFiMGUwOTEyIiwidXBkYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIiwiY3JlYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIn0sImlhdCI6MTcwNzkxNTQzNH0.GBDe1PNnqYfWYae1XQi74rv2qykN9fCzxGPYbgafrfg";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjQ2LCJzZXNzaW9uVG9rZW4iOnsiaWQiOjE3NjkzLCJzZXNzaW9uIjoiMTM5MDhhZDI4MDM0NmYxYjBmNzM4MmQwMGM1ZGMwYzkiLCJ1IjoiYjI4ZWU2MmFhNjgwYmRjZjUwZDNkMGIxZDgwNzczZmQ1MTNhN2JiMiIsInVwZGF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6MTg6NDcuNTE2WiIsImNyZWF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6MTg6NDcuNTE2WiJ9LCJpYXQiOjE3MDk4MjExMjd9.V1SVEvjG9lHZiQdrZaU_FBiuzXOpKOiUVgUQ2DQEMEo";
 
 const header = {
   "auth-token": token,
 };
 
-export const Devices: React.FC<DevicesProps> = ({ showAlert }) => {
+export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
+  const getHaandleId = `/op/${operatorId}/cpe_table?size=${numOfHaandles}&sort=id&order=desc`; // CHANGE TO HAANDLE I CREATE
+
   const [macAddress, setMacAddress] = useState<string>("");
   const [deviceDescr, setDeviceDescr] = useState<string>("");
   const [deviceCat, setDeviceCat] = useState<number>(0);
@@ -63,7 +65,7 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert }) => {
       };
       deviceJson.Devices.push(accounts);
     }
-    console.log(deviceJson.Devices);
+    //console.log(deviceJson.Devices);
   };
 
   // Descriptions
@@ -286,33 +288,31 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert }) => {
       return null;
     }
   };
-  
+
   // Call fetchRandomId function when component mounts
   useEffect(() => {
     fetchRandomId();
   }, []);
 
-  let numOfHaandles = 700
-  
   // Submit Request
 
-  const apiURL = "https://apidev.blackdice.io";
+  const apiURL = "https://apibeta.blackdice.io";
   const endpointThreat75 = "/pa/devices";
   const endpointThreat25 = "/pa/devices/unconfirmed";
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-  
+
     if (!deviceNum) {
       alert("Enter the amount of Accounts you want to populate");
     } else {
       const numDevices = parseInt(deviceNum);
       const threat75Percentage = 0.75; // 75% of data to endpointThreat75
-  
+
       for (let i = 0; i < numDevices; i++) {
         // Fetch a new random ID for each device
         const newRandomId = await fetchRandomId();
-        
+
         const randomDeviceDescription = getRandomDeviceDescription();
         const deviceData = {
           name: `${getRandomDeviceName()} ${randomDeviceDescription.type}`,
@@ -324,7 +324,7 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert }) => {
           rules: [],
           haandle: newRandomId, // Use the new random ID
         };
-  
+
         // Determine the endpoint to use based on random number
         const randomNumber = Math.random();
         const endpoint =
@@ -332,14 +332,14 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert }) => {
             ? endpointThreat75
             : endpointThreat25;
         console.log(deviceData);
-  
+
         // Api Call
-  
+
         try {
           const response = await axios.post(apiURL + endpoint, deviceData, {
             headers: header,
           });
-  
+
           if (response.status >= 200 && response.status < 300) {
             showAlert(true, "Devices successfully created");
           } else {

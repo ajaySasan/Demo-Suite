@@ -1,18 +1,37 @@
-// This code randomizes deviceID
+// This code gets specific ID or ranges between certain IDs
 
 import axios from "axios";
 import { useState, useEffect } from "react";
 import React from "react";
 import { PopUpAlert } from "../PopUpAlert";
 
-const apiURL = "https://apidev.blackdice.io";
+const apiURL = "https://apibeta.blackdice.io";
 const endpointMetrics = "/svc/mock/create-many-device-metrics";
 const endpointThreat = "/svc/mock/create-many-threats";
 
-const deviceIdEndpoint = "/pa/devices/all"; // may need to change !?!?!?!?!?
+// const deviceIdEndpoint = "/pa/devices/all"; // may need to change !?!?!?!?!?
+const deviceIdOperator = "/op/operatordevices/22?size=200";
+
+interface Device {
+  ID: number;
+  mac_address: string;
+  // Add more properties if needed
+}
+
+interface ApiResponse {
+  data: Device[];
+  // Add other properties if needed
+}
+
+// const token =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTIwLCJzZXNzaW9uVG9rZW4iOnsiaWQiOjcwNTgsInNlc3Npb24iOiJjNzEzNTAxNTNkOTBhMGI1NDY1M2U1M2I2ZjE4MGMyMCIsInUiOiIyYTI1YTQyYTQ5MzEwY2RjZjAzMzM1OGMzYWY5YTk1MDFiMGUwOTEyIiwidXBkYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIiwiY3JlYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIn0sImlhdCI6MTcwNzkxNTQzNH0.GBDe1PNnqYfWYae1XQi74rv2qykN9fCzxGPYbgafrfg";
+
+// const header = {
+//   "auth-token": token,
+// };
 
 const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTIwLCJzZXNzaW9uVG9rZW4iOnsiaWQiOjcwNTgsInNlc3Npb24iOiJjNzEzNTAxNTNkOTBhMGI1NDY1M2U1M2I2ZjE4MGMyMCIsInUiOiIyYTI1YTQyYTQ5MzEwY2RjZjAzMzM1OGMzYWY5YTk1MDFiMGUwOTEyIiwidXBkYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIiwiY3JlYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIn0sImlhdCI6MTcwNzkxNTQzNH0.GBDe1PNnqYfWYae1XQi74rv2qykN9fCzxGPYbgafrfg";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjQ2LCJzZXNzaW9uVG9rZW4iOnsiaWQiOjE3Njk0LCJzZXNzaW9uIjoiMTdiNDk0OWMxYzc4NGRkOWQ3ODE0YzRiZmNkNTBlYzIiLCJ1IjoiYjI4ZWU2MmFhNjgwYmRjZjUwZDNkMGIxZDgwNzczZmQ1MTNhN2JiMiIsInVwZGF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6NDE6MjUuNjczWiIsImNyZWF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6NDE6MjUuNjczWiJ9LCJpYXQiOjE3MDk4MjI0ODV9.iY7cKJjJEg0UsGySFGdCPrfeg0D9BdKc5RP2TFrvWtY"
 
 const header = {
   "auth-token": token,
@@ -28,8 +47,8 @@ interface threats {
   key: string;
   description: string;
   action: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: any;
+  updatedAt: any;
 }
 interface Metric {
   deviceId: number;
@@ -39,8 +58,8 @@ interface Metric {
   rxBitrate: number;
   txBytes: number;
   rxBytes: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: any;
+  updatedAt: any;
   rxBitRateAverage: string;
   txBitRateAverage: string;
   signalNum: number;
@@ -55,6 +74,7 @@ interface DateFilter {
 interface ThreatsAndMetrics {
   demoDate: string;
   showAlert: (success: boolean, message: string) => void;
+  
 }
 
 export const Metrics: React.FC<ThreatsAndMetrics> = ({
@@ -71,22 +91,22 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   });
 
   const initialThreatPercentages: { [key: string]: number } = {
-    "app_fw": 5,
-    "dev_fw": 2,
-    "mw_site": 10,
-    "dev_ab": 8,
-    "unauth": 2,
-    "app_blk": 3,
-    "data_leak": 6,
-    "dev_vuln": 24,
-    "c2_site": 1,
-    "ras_site": 12,
-    "ph_site": 2,
-    "bot_site": 13,
-    "sp_site": 1,
-    "ad_site": 2,
-    "fas_site": 9
-}
+    app_fw: 5,
+    dev_fw: 2,
+    mw_site: 10,
+    dev_ab: 8,
+    unauth: 2,
+    app_blk: 3,
+    data_leak: 6,
+    dev_vuln: 24,
+    c2_site: 1,
+    ras_site: 12,
+    ph_site: 2,
+    bot_site: 13,
+    sp_site: 1,
+    ad_site: 2,
+    fas_site: 9,
+  };
 
   // const handleThreatPercentageChange = (
   //   event: React.ChangeEvent<HTMLInputElement>,
@@ -186,98 +206,134 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   // Splits date categories into percentages
 
-  const datePercentages = (totalResult: number) => {
-    const numDates24Hours = Math.ceil(dateFilter.past24Hours * totalResult);
-    const numDates7Days = Math.ceil(dateFilter.past7Days * totalResult);
-    const numDates30Days = Math.ceil(dateFilter.past30Days * totalResult);
-    const numDates60Days = Math.ceil(dateFilter.past60Days * totalResult);
+  const generateRandomDates = (totalResult: number) => {
+    const numDates24Hours = Math.ceil(
+      (dateFilter.past24Hours / 100) * totalResult
+    );
+    const numDates7Days = Math.ceil((dateFilter.past7Days / 100) * totalResult);
+    const numDates30Days = Math.ceil(
+      (dateFilter.past30Days / 100) * totalResult
+    );
+    const numDates60Days = Math.ceil(
+      (dateFilter.past60Days / 100) * totalResult
+    );
+
+    const allDates = [] as string[];
 
     const formatDate = (date: Date) => {
       return date.toISOString().slice(0, 19).replace("T", " ");
     };
 
-    const date = new Date(demoDate); //Declares todays date.
-    //const date = new Date(demoDate);
+    const demoDate = new Date(); //Declares today's date.
 
-    const past24Hours = randomDate24Hours(date);
-    const past7Days = random7Days(date, past24Hours);
-    const past30Days = random30Days(date, past7Days);
-    const past60Days = random30Days(date, past30Days);
+    const past24Hours = new Date(demoDate.getTime() - 24 * 60 * 60 * 1000);
+    const past7Days = new Date(demoDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+    const past30Days = new Date(demoDate.getTime() - 30 * 24 * 60 * 60 * 1000);
+    const past60Days = new Date(demoDate.getTime() - 60 * 24 * 60 * 60 * 1000);
 
     const dates24Hours = Array.from({ length: numDates24Hours }, () =>
-      formatDate(randomDate24Hours(date))
+      formatDate(randomDate24Hours(demoDate))
     );
     const dates7Days = Array.from({ length: numDates7Days }, () =>
-      formatDate(random7Days(date, past24Hours))
+      formatDate(random7Days(demoDate, past24Hours))
     );
     const dates30Days = Array.from({ length: numDates30Days }, () =>
-      formatDate(random30Days(date, past7Days))
+      formatDate(random30Days(demoDate, past7Days))
     );
     const dates60Days = Array.from({ length: numDates60Days }, () =>
-      formatDate(random60Days(date, past30Days))
+      formatDate(random60Days(demoDate, past30Days))
     );
 
-    const allDates = [
+    allDates.push(
       ...dates24Hours,
       ...dates7Days,
       ...dates30Days,
-      ...dates60Days,
-    ].slice(0, totalResult);
+      ...dates60Days
+    );
 
-    return allDates;
+    // Select a random date from allDates
+    const randomIndex = Math.floor(Math.random() * allDates.length);
+    return allDates[randomIndex];
   };
+
+  // console.log(datePercentages(10))
+  // create a function to randomly select dates based on their percentages! ref to dateFilter.
 
   const [numIds, setNumIds] = useState<number>();
   const [idsArray, setIdsArray] = useState<any[]>([]);
   const [idsArrayMetrics, setIdsArrayMetrics] = useState<any[]>([]);
+  const [userInputDeviceId, setUserInputDeviceId] = useState<
+    number | undefined
+  >();
 
-  const fetchData = async () => {
+  const fetchData = async (deviceId?: number) => {
     try {
-      const response = await axios.get<any[]>(`${apiURL}${deviceIdEndpoint}`, {
-        headers: header,
-      });
-      const idsArray = response.data.slice(0, numIds).map((item) => ({
-        deviceId: item.id,
-        mac: item.macAddress,
-      }));
-      setIdsArray(idsArray);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
+        const response = await axios.get<ApiResponse>(`${apiURL}${deviceIdOperator}`, {
+            headers: header,
+        });
 
+        const deviceData = response.data.data; // Access the 'data' property
+
+        const formattedIdsArray = deviceData.map((item: any) => ({ // Now map over the 'data' array
+            deviceId: item.ID, // Assuming 'ID' is the correct key for device ID
+            mac: item.mac_address, // Assuming 'mac_address' is the correct key for MAC address
+        }));
+
+        setIdsArray(formattedIdsArray);
+    } catch (error) {
+        console.error("Error fetching data:", error);
+    }
+};
+  
   useEffect(() => {
-    fetchData();
-  }, [numIds]); // Fetch data whenever numIds changes
+    if (userInputDeviceId !== undefined) {
+      fetchData(userInputDeviceId);
+    } else {
+      fetchData();
+    }
+  }, [userInputDeviceId, numIds]); // Fetch data whenever numIds or userInputDeviceId changes
+  
+  // console.log(idsArray);
+
+  const handleInputDeviceChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setUserInputDeviceId(parseInt(event.target.value));
+  };
 
   // Metrics Device ID - LIMIT OF 12
 
-  const fetchLimitedDeviceIds = async () => {
-    try {
-      const response = await axios.get<any[]>(`${apiURL}${deviceIdEndpoint}`, {
-        headers: header,
-      });
+  // const fetchLimitedDeviceIds = async () => {
+  //   try {
+  //     const response = await axios.get<any[]>(`${apiURL}${deviceIdEndpoint}`, {
+  //       headers: header,
+  //     });
 
-      // Declared 102 DEVICE ID AND MAC ADDRESS FOR METRICS DATA
+  //     // Filter the response to select only deviceIds between 16160 and 16175
+  //     const filteredIdsArray = response.data.filter((item) => {
+  //       const deviceId = item.id;
+  //       return deviceId >= 16170 && deviceId <= 16170;
+  //     });
 
-      const limitedIdsArray = response.data.slice(0, 102).map((item) => ({
-        deviceId: item.id,
-        mac: item.macAddress,
-      }));
+  //     // Map the filtered results to required format
+  //     const limitedIdsArray = filteredIdsArray.map((item) => ({
+  //       deviceId: item.id,
+  //       mac: item.macAddress,
+  //     }));
 
-      setIdsArrayMetrics(limitedIdsArray); // Update state with limited device IDs for metrics
-    } catch (error) {
-      console.error("Error fetching limited data:", error);
-    }
-  };
+  //     setIdsArrayMetrics(limitedIdsArray); // Update state with limited device IDs for metrics
+  //   } catch (error) {
+  //     console.error("Error fetching limited data:", error);
+  //   }
+  // };
 
-  useEffect(() => {
-    fetchLimitedDeviceIds();
-  }, []);
+  // useEffect(() => {
+  //   fetchLimitedDeviceIds();
+  // }, []);
 
-  const handleDeviceIdChange = (event: any) => {
-    setNumIds(parseInt(event.target.value, 10));
-  };
+  // const handleDeviceIdChange = (event: any) => {
+  //   setNumIds(parseInt(event.target.value, 10));
+  // };
 
   // Metric Data
 
@@ -321,10 +377,10 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   // Updated at Time
 
-  const updatedAt = (createdAt: Date) => {
+  const updatedAt = (createdAtDate: Date) => {
     const past24Hours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
     const randomUpdate = Math.floor(Math.random() * past24Hours);
-    const updatedAtDate = new Date(createdAt.getTime() + randomUpdate);
+    const updatedAtDate = new Date(createdAtDate.getTime() + randomUpdate);
 
     return updatedAtDate.toISOString().slice(0, 19).replace("T", " ");
   };
@@ -356,7 +412,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
     console.log(metricJson);
   };
 
-  const dateRatio = datePercentages(metricData);
+  const dateRatio = generateRandomDates(metricData);
 
   // Expanded
 
@@ -476,8 +532,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   };
 
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const numMetrics = 100; // DECLARES NUMBER OF METRICS TO BE POSTED EVERY 3 SECONDS
-    const randomizeNum = randomNumBetween1And100();
+    const numMetrics = 24; // Number of metrics to be posted every 3 seconds
     const totalPercentage = Object.values(initialThreatPercentages).reduce(
       (acc, val) => acc + val,
       0
@@ -494,12 +549,26 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       const metrics: Metric[] = [];
       const threats: threats[] = [];
 
-      dateRatio.forEach((metricDate) => {
+      // Calculate the total number of metrics and threats for each threat type
+      const totalMetricsPerThreatType: { [key: string]: number } = {};
+      const totalThreatsPerThreatType: { [key: string]: number } = {};
+
+      Object.entries(initialThreatPercentages).forEach(([key, percentage]) => {
+        totalMetricsPerThreatType[key] = Math.floor(
+          (numMetrics * percentage) / 100
+        );
+        totalThreatsPerThreatType[key] = Math.floor(
+          (numMetrics * percentage) / 100
+        ); // Assuming 1 threat per 2 metrics
+      });
+
+      // Generate metrics and threats based on the calculated numbers
+      Object.entries(totalMetricsPerThreatType).forEach(([key, numMetrics]) => {
         for (let i = 0; i < numMetrics; i++) {
           const randomDeviceId: any =
-            idsArrayMetrics[Math.floor(Math.random() * idsArrayMetrics.length)];
-
-          const updatedAtDate = updatedAt(new Date(metricDate));
+            idsArray[Math.floor(Math.random() * idsArray.length)];
+          const createdAtDate = generateRandomDates(metricData); // Generate new date for each metric
+          const updatedAtDate = updatedAt(new Date(createdAtDate));
 
           metrics.push({
             deviceId: randomDeviceId.deviceId,
@@ -509,37 +578,46 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
             rxBitrate: rxBitrate(),
             txBytes: txByte(),
             rxBytes: rxByte(),
-            createdAt: metricDate,
-            updatedAt: updatedAtDate,
+            createdAt: createdAtDate,
+            updatedAt: updatedAtDate, // Assuming updatedAt depends on createdAt
             rxBitRateAverage: randomRxBitRateAverage(),
             txBitRateAverage: randomTxBitRateAverage(),
             signalNum: signalNum(),
           });
         }
+      });
 
-        Object.entries(initialThreatPercentages).forEach(([key, percentage]) => {
-          const numThreats = Math.floor((numMetrics * percentage) / 98);
+      Object.entries(totalThreatsPerThreatType).forEach(([key, numThreats]) => {
+        const threatIndex = threat.filter((item) => item.key === key);
+        for (let i = 0; i < numThreats; i++) {
+          const randomThreat = randomizeThreat(threatIndex);
+          const createdAtDate = generateRandomDates(metricData); // Generate new date for each threat
+          const randomDeviceId: any =
+            idsArray[Math.floor(Math.random() * idsArray.length)];
+          const updatedAtDate = updatedAt(new Date(createdAtDate));
 
-          for (let j = 0; j < numThreats; j++) {
-            const randomDeviceId: any =
-              idsArray[Math.floor(Math.random() * idsArray.length)];
-
+          if (randomThreat) {
             const threat = {
               deviceId: randomDeviceId.deviceId,
-              threatType: key,
-              key: key,
-              description: `demo.${key}.com blocked by BlackDice Shield`,
+              threatType: randomThreat.threatType,
+              key: randomThreat.key,
+              description: `demo.${randomThreat.key}.com blocked by BlackDice Shield`,
               action: "WARN:BLOCK_SITE",
-              createdAt: metricDate,
-              updatedAt: metricDate,
+              createdAt: createdAtDate,
+              updatedAt: updatedAtDate, // Assuming updatedAt depends on createdAt
             };
-
+            //console.log(createdAtDate);
             threats.push(threat);
+          } else {
+            console.log(`No matching threat found for key: ${key}`);
           }
-        });
+        }
       });
+
       console.log(metrics);
-      console.log(threats); // Add this line for testing purposes
+      console.log(threats);
+
+      // Post metrics
       axios
         .post(apiURL + endpointMetrics, {
           metrics: metrics,
@@ -557,6 +635,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
           showAlert(false, "Error creating Threats and Metrics ");
         });
 
+      // Post threats
       axios
         .post(apiURL + endpointThreat, {
           threats: threats,
@@ -575,7 +654,12 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
         });
     }
   };
+
   // Returns JSX
+
+  // Demo message
+
+  const [demoMessage, setDemoMessage] = useState<string>("");
 
   // Start the demo loop
   const [demoRunning, setDemoRunning] = useState<boolean>(false);
@@ -586,6 +670,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   const startDemo: any = {
     preventDefault: () => {},
+
     target: {
       value: "",
     },
@@ -594,9 +679,10 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   const startDemoLoop = () => {
     setDemoRunning(true);
     handleSubmit(startDemo);
+    setDemoMessage("Demo has begun");
 
     console.log("Entering Demo mode");
-    const newInterval = setInterval(handleSubmit, 3000); // Call handleSubmit every 5 seconds
+    const newInterval = setInterval(handleSubmit, 4000); // Call handleSubmit every 5 seconds
     setDemoInterval(newInterval); // Store the interval ID in state
 
     // Stop the demo loop after 60 minutes
@@ -614,17 +700,42 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
       setDemoRunning(false);
       console.log("Demo stopped manually.");
       showAlert(false, "Demo Stopped");
+      setDemoMessage("Demo has stopped");
+      setTimeout(() => {
+        setDemoMessage(""); // Clear the message after 5 seconds
+      }, 5000);
     }
   };
 
   return (
     <div>
+      {/* <input
+        type="number"
+        className="deviceIdInput"
+        value={userInputDeviceId}
+        placeholder="Device ID"
+        onChange={handleInputDeviceChange}
+      /> */}
+
       <button type="button" onClick={startDemoLoop}>
         START DEMO
       </button>
       <button type="button" onClick={stopDemoLoop}>
         STOP DEMO
       </button>
+      {demoMessage && (
+        <p
+          className={`message ${
+            demoMessage.includes("begun")
+              ? "neon-green"
+              : demoMessage.includes("stopped")
+              ? "warning-red"
+              : ""
+          }`}
+        >
+          {demoMessage}
+        </p>
+      )}
     </div>
   );
 };

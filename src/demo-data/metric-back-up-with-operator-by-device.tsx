@@ -5,18 +5,11 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { PopUpAlert } from "../PopUpAlert";
 
-// const deviceIdEndpoint = "/pa/devices/all"; // may need to change !?!?!?!?!?
+const apiURL = "https://apibeta.blackdice.io";
+const endpointMetrics = "/svc/mock/create-many-device-metrics";
+const endpointThreat = "/svc/mock/create-many-threats";
 
-interface Device {
-  ID: number;
-  mac_address: string;
-  // Add more properties if needed
-}
-
-interface ApiResponse {
-  data: Device[];
-  // Add other properties if needed
-}
+const deviceIdEndpoint = "/op/operatordevices/22"; // may need to change !?!?!?!?!?
 
 // const token =
 //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NTIwLCJzZXNzaW9uVG9rZW4iOnsiaWQiOjcwNTgsInNlc3Npb24iOiJjNzEzNTAxNTNkOTBhMGI1NDY1M2U1M2I2ZjE4MGMyMCIsInUiOiIyYTI1YTQyYTQ5MzEwY2RjZjAzMzM1OGMzYWY5YTk1MDFiMGUwOTEyIiwidXBkYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIiwiY3JlYXRlZEF0IjoiMjAyNC0wMi0xNFQxMjo1NzoxNC4yMTNaIn0sImlhdCI6MTcwNzkxNTQzNH0.GBDe1PNnqYfWYae1XQi74rv2qykN9fCzxGPYbgafrfg";
@@ -24,6 +17,22 @@ interface ApiResponse {
 // const header = {
 //   "auth-token": token,
 // };
+
+const token =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjQ2LCJzZXNzaW9uVG9rZW4iOnsiaWQiOjE3Njk0LCJzZXNzaW9uIjoiMTdiNDk0OWMxYzc4NGRkOWQ3ODE0YzRiZmNkNTBlYzIiLCJ1IjoiYjI4ZWU2MmFhNjgwYmRjZjUwZDNkMGIxZDgwNzczZmQ1MTNhN2JiMiIsInVwZGF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6NDE6MjUuNjczWiIsImNyZWF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6NDE6MjUuNjczWiJ9LCJpYXQiOjE3MDk4MjI0ODV9.iY7cKJjJEg0UsGySFGdCPrfeg0D9BdKc5RP2TFrvWtY"
+
+const header = {
+  "auth-token": token,
+};
+
+interface ResponseData {
+  headers: any[];
+  data: any[]; // Assuming data is an array of objects
+  records: number;
+  size: number;
+  start: number;
+  // Add any other properties if needed
+}
 
 interface DeviceIdMacAddress {
   deviceId: number;
@@ -62,24 +71,12 @@ interface DateFilter {
 interface ThreatsAndMetrics {
   demoDate: string;
   showAlert: (success: boolean, message: string) => void;
-  operatorId: any;
-} 
+}
 
 export const Metrics: React.FC<ThreatsAndMetrics> = ({
   demoDate,
   showAlert,
-  operatorId,
 }) => {
-  const apiURL = "https://apibeta.blackdice.io";
-  const endpointMetrics = "/svc/mock/create-many-device-metrics";
-  const endpointThreat = "/svc/mock/create-many-threats";
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjQ2LCJzZXNzaW9uVG9rZW4iOnsiaWQiOjE3Njk0LCJzZXNzaW9uIjoiMTdiNDk0OWMxYzc4NGRkOWQ3ODE0YzRiZmNkNTBlYzIiLCJ1IjoiYjI4ZWU2MmFhNjgwYmRjZjUwZDNkMGIxZDgwNzczZmQ1MTNhN2JiMiIsInVwZGF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6NDE6MjUuNjczWiIsImNyZWF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6NDE6MjUuNjczWiJ9LCJpYXQiOjE3MDk4MjI0ODV9.iY7cKJjJEg0UsGySFGdCPrfeg0D9BdKc5RP2TFrvWtY";
-
-  const header = {
-    "auth-token": token,
-  };
-  const deviceIdOperator: any = `/op/operatordevices/${operatorId}?size=200`;
   const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
   const [threatPercentages, setThreatPercentages] = useState<{
     [key: string]: number;
@@ -267,21 +264,35 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   const fetchData = async (deviceId?: number) => {
     try {
-      const response = await axios.get<ApiResponse>(
-        `${apiURL}${deviceIdOperator}`,
-        {
-          headers: header,
-        }
-      );
-
-      const deviceData = response.data.data; // Access the 'data' property
-
-      const formattedIdsArray = deviceData.map((item: any) => ({
-        // Now map over the 'data' array
-        deviceId: item.ID, // Assuming 'ID' is the correct key for device ID
-        mac: item.mac_address, // Assuming 'mac_address' is the correct key for MAC address
+      const response = await axios.get<ResponseData>(`${apiURL}${deviceIdEndpoint}`, {
+        headers: header
+      });
+  
+      console.log("Response data:", response.data);
+  
+      const responseDataArray = response.data.data;
+  
+      if (!Array.isArray(responseDataArray)) {
+        console.error("Response data is not an array:", responseDataArray);
+        return;
+      }
+  
+      let filteredIdsArray = responseDataArray;
+  
+      if (deviceId) {
+        filteredIdsArray = responseDataArray.filter((item) => item.ID === deviceId);
+      } else {
+        filteredIdsArray = responseDataArray.filter((item) => {
+          const deviceId = item.ID;
+          return deviceId >= 16160 && deviceId <= 16175;
+        });
+      }
+  
+      const formattedIdsArray = filteredIdsArray.map((item) => ({
+        deviceId: item.ID,
+        mac: item.mac_address,
       }));
-
+  
       setIdsArray(formattedIdsArray);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -296,7 +307,7 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
     }
   }, [userInputDeviceId, numIds]); // Fetch data whenever numIds or userInputDeviceId changes
 
-  // console.log(idsArray);
+  
 
   const handleInputDeviceChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -712,13 +723,13 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
 
   return (
     <div>
-      {/* <input
+      <input
         type="number"
         className="deviceIdInput"
         value={userInputDeviceId}
         placeholder="Device ID"
         onChange={handleInputDeviceChange}
-      /> */}
+      />
 
       <button type="button" onClick={startDemoLoop}>
         START DEMO

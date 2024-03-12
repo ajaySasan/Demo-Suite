@@ -9,9 +9,25 @@ interface Register {
 
 interface RegisterProps {
   showAlert: (success: boolean, message: string) => void;
+  operatorId: any;
 }
 
-export const Register: React.FC<RegisterProps> = ({ showAlert }) => {
+export const Register: React.FC<RegisterProps> = ({
+  showAlert,
+  operatorId,
+}) => {
+  const operators: any[] = [
+    { key: 22, operatorIdUrl: "stag-casa-systems.blackdice.io" },
+    { key: 23, operatorIdUrl: "stag-aprecomm.blackdice.io" },
+  ];
+
+  const getOperatorUrl = (id: number) => {
+    const operator = operators.find((op) => op.key === id);
+    return operator ? operator.operatorIdUrl : "Unknown";
+  };
+
+  const operatorIdUrl = getOperatorUrl(operatorId);
+
   const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
 
   // State
@@ -209,7 +225,7 @@ export const Register: React.FC<RegisterProps> = ({ showAlert }) => {
       await axios.get(verificationLink);
       console.log("Account Activated:");
     } catch (error) {
-      console.log("Error activating account:", error);
+      console.log("Account not Activated");
     }
   };
 
@@ -232,17 +248,14 @@ export const Register: React.FC<RegisterProps> = ({ showAlert }) => {
           email,
           pass,
           serialNumber: serialNum,
-          referer: "dev.blackdice.io"
+          referer: operatorIdUrl,
         };
 
-        const apiURL = "https://apidev.blackdice.io";
+        const apiURL = "https://apibeta.blackdice.io";
         const endpointThreat = "/pa/auth/register";
 
         try {
-          const response = await axios.post(apiURL + endpointThreat, userData )
-          // const response = await axios.post(apiURL + endpointThreat, userData, {
-          //   headers: { referer: "dev.blackdice.io" },
-          // });
+          const response = await axios.post(apiURL + endpointThreat, userData);
           console.log(response.data);
 
           if (response.status >= 200 && response.status < 300) {

@@ -36,14 +36,36 @@ function App() {
     setAlertContent(message);
   };
 
+  const [operatorId, setOperatorId] = useState<any>(0);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(event.target.value);
+    if (!isNaN(value)) {
+      setOperatorId(value);
+    }
+  };
+
   return (
     <div>
       <Header />
       <div className="homePageContainer">
         <div className="appMain"></div>
+        <div>
+          <label htmlFor="operatorId">Operator ID:</label>
+          <input
+            type="number"
+            id="operatorId"
+            value={operatorId !== null ? operatorId : ""}
+            onChange={handleInputChange}
+          />
+        </div>
 
         <div className="demoButtons">
-          <MetricsTest demoDate={demoDate} showAlert={showAlert} />
+          <MetricsTest
+            demoDate={demoDate}
+            showAlert={showAlert}
+            operatorId={operatorId}
+          />
         </div>
         <button
           className="moreDetailsBtn"
@@ -73,8 +95,8 @@ function App() {
                   onChange={handleDateChange}
                 />
               </div>
-              <Register showAlert={showAlert} />
-              <Devices showAlert={showAlert} />
+              <Register showAlert={showAlert} operatorId={operatorId}/>
+              <Devices showAlert={showAlert} operatorId={operatorId} />
               <Threats demoDate={demoDate} showAlert={showAlert} />
               <Metrics demoDate={demoDate} showAlert={showAlert} />
             </>

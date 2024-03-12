@@ -25,6 +25,7 @@ interface threats {
 interface ThreatsProps {
   demoDate: string;
   showAlert: (success: boolean, message: string) => void;
+  
 }
 
 interface DateFilter {
