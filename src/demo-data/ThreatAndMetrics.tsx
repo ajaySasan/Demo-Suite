@@ -571,26 +571,34 @@ const ThreatsAndMetrics: React.FC<ThreatsAndMetrics> = ({
 
   // Demo message
 
+  const startDemo: any = {
+    preventDefault: () => {},
+    target: {
+      value: "",
+    },
+  };
+
   const startDemoLoop = () => {
-  if (!idsArray.length) {
-    alert(
-      "No Device Id available. Please wait for data to load or try a different operator."
-    );
-    return;
-  }
-  setDemoRunning(true);
-  setDemoMessage("Demo has begun");
+    if (!idsArray.length) {
+      alert(
+        "No Device Id available. Please wait for data to load or try a different operator."
+      );
+    } else {
+      setDemoRunning(true);
+      handleSubmit(startDemo);
+      setDemoMessage("Demo has begun");
 
-  console.log("Entering Demo mode");
-  const newInterval = setInterval(handleSubmit, 4000);
-  setDemoInterval(newInterval);
+      console.log("Entering Demo mode");
+      const newInterval = setInterval(handleSubmit, 4000);
+      setDemoInterval(newInterval);
 
-  setTimeout(() => {
-    clearInterval(interval);
-    setDemoRunning(false);
-    console.log("Demo stopped after 60 minutes.");
-  }, 60 * 60 * 1000);
-};
+      setTimeout(() => {
+        clearInterval(interval);
+        setDemoRunning(false);
+        console.log("Demo stopped after 60 minutes.");
+      }, 60 * 60 * 1000);
+    }
+  };
 
   const stopDemoLoop = () => {
     if (demoInterval) {

@@ -3,8 +3,8 @@ export const Header = () => {
   return (
     <div>
       <header className="title">
+        <img src={blackDiceImg} className="blackDiceLogo" alt="Black Dice" />
         <div className="inlineHeader">
-          <img src={blackDiceImg} className="blackDiceLogo" alt="Black Dice" />
           <h1>Demo Suite</h1>
         </div>
         <h3>

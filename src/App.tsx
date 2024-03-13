@@ -55,7 +55,7 @@ function App() {
       <Header />
       <div className="homePageContainer">
         <div className="appMain"></div>
-        <div>
+        <div className="operator">
           <label htmlFor="operatorId">Operator ID:</label>
           <input
             type="number"

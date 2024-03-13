@@ -32,10 +32,11 @@ body {
   background: var(--ui-background) center center fixed;
   background-repeat: no-repeat;
   background-size: cover;
+  margin-top: 12.5%;
 }
 
 h1 {
-  font-size: 45px;
+  font-size: 55px;
   font-weight: 700;
   margin: 30px;
   color: var(--white);
@@ -62,6 +63,8 @@ h3 {
   margin: 0;
   padding: 5px;
   color: var(--mid-blue);
+  position: relative;
+  top: 10px;
 }
 
 input {
@@ -166,11 +169,6 @@ label {
   width: 100%;
 }
 
-.blackDiceLogo {
-  margin: 10px;
-  margin-top: 15px;
-}
-
 button {
   background: var(--dark-button);
   border-radius: 40px;
@@ -190,32 +188,13 @@ button:active {
   background: var(--goldenRod-gradient);
 }
 
-// .popUpAlert {
-//   display: flex;
-//   background: var(--neon-green);
-//   width: 320px;
-//   border-radius: 30px;
-//   position: fixed;
-//   top: 20px;
-//   right: 20px;
-//   align-items: center;
-//   box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
-//   z-index: 9999;
-
-//   & .bi {
-//     margin-top: 4px;
-//     margin-left: 20px;
-
-//   }
-// }
-
 .popUpAlert {
   display: flex;
   position: fixed;
   top: 20px;
   right: 20px;
   align-items: center;
-  //box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
   z-index: 9999;
   border-radius: 30px;
   padding: 5px 10px;
@@ -224,15 +203,15 @@ button:active {
 @keyframes popOutAndFade {
   0% {
     right: -100px; /* Start position */
-    opacity: 0; /* Start opacity */
+    opacity: 0;
   }
   50% {
-    right: calc(50% - 600px); /* Move halfway across the screen */
-    opacity: 1; /* Full opacity */
+    right: calc(50% - 910px);
+    opacity: 1;
   }
   90% {
-    right: calc(50% - 600px); /* Stay at the center for some time */
-    opacity: 1; /* Full opacity */
+    right: calc(50% - 910px);
+    opacity: 1;
   }
   100% {
     opacity: 0; /* Fade out */
@@ -249,10 +228,14 @@ button:active {
   background: var(--neon-green);
 }
 
-.popUpAlert.error,
 .warning-red {
   background: var(--warning-red-background);
-  animation: fade-out 5s forwards; /* Play the animation and keep the final state */
+  animation: fade-out 5s forwards;
+}
+
+.popUpAlert.error {
+  animation: popOutAndFade 2s forwards;
+  background: var(--warning-red-background);
 }
 
 .popUpAlert .alertGood,
@@ -300,6 +283,25 @@ button:active {
   border-radius: 30px;
   margin: 10px auto;
   font-weight: 500;
+}
+
+.operator {
+  display: flex;
+  flex-direction: column;
+
+  & input {
+    width: 60px;
+    margin: 10px auto;
+  }
+
+  & label {
+    color: var(--white);
+  }
+}
+
+.inlineHeader {
+  align-items: flex-end;
+  justify-content: center;
 }
 @keyframes pulse-animation {
   0% {
