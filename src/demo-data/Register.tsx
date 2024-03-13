@@ -1,3 +1,18 @@
+
+/**
+ *
+ * To create an account for the use of demo purposes, this demo suite consists of a myriad of functions that declare a set of randomized data. The account will consist of a email address, password, serial number and will be assigned to a specific operator account that reflects the client.
+ * 
+ * @param email - This creates an email address by constructing a first and last name, a series of random numbers and or special characters, followed by demo domain.
+ * @param pass - This constructs a unique random password based on a set of uppercase / lowercase letters, numbers, special characters.
+ * @param serialNumber - This generates a unique random serial number that will be set as the router ID for the new account
+ * @param referer - The declares the operatorId the new account will be assigned to.
+ */
+// include an example here
+export function Account(email: string, pass: string, serialNumber: any, referer: string) {
+  return (email + pass + serialNumber + referer)
+}
+
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 
@@ -16,10 +31,8 @@ export const Register: React.FC<RegisterProps> = ({
   showAlert,
   operatorId,
 }) => {
-
   // State
 
-  const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
   const [accountNum, setAccountNum] = useState<any>(0);
 
   // Operator ID
