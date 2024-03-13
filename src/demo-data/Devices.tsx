@@ -17,17 +17,8 @@ interface DevicesProps {
   operatorId: any;
 }
 
-let numOfHaandles = 300;
-
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjQ2LCJzZXNzaW9uVG9rZW4iOnsiaWQiOjE3NjkzLCJzZXNzaW9uIjoiMTM5MDhhZDI4MDM0NmYxYjBmNzM4MmQwMGM1ZGMwYzkiLCJ1IjoiYjI4ZWU2MmFhNjgwYmRjZjUwZDNkMGIxZDgwNzczZmQ1MTNhN2JiMiIsInVwZGF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6MTg6NDcuNTE2WiIsImNyZWF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6MTg6NDcuNTE2WiJ9LCJpYXQiOjE3MDk4MjExMjd9.V1SVEvjG9lHZiQdrZaU_FBiuzXOpKOiUVgUQ2DQEMEo";
-
-const header = {
-  "auth-token": token,
-};
-
 export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
-  const getHaandleId = `/op/${operatorId}/cpe_table?size=${numOfHaandles}&sort=id&order=desc`; // CHANGE TO HAANDLE I CREATE
+  // State
 
   const [macAddress, setMacAddress] = useState<string>("");
   const [deviceDescr, setDeviceDescr] = useState<string>("");
@@ -36,7 +27,17 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
   const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
   const [deviceNum, setDeviceNum] = useState<any>(0);
 
-  // Input Change
+  // Databse API
+
+  let numOfHaandles = 300;
+  const token =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6NjQ2LCJzZXNzaW9uVG9rZW4iOnsiaWQiOjE3NjkzLCJzZXNzaW9uIjoiMTM5MDhhZDI4MDM0NmYxYjBmNzM4MmQwMGM1ZGMwYzkiLCJ1IjoiYjI4ZWU2MmFhNjgwYmRjZjUwZDNkMGIxZDgwNzczZmQ1MTNhN2JiMiIsInVwZGF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6MTg6NDcuNTE2WiIsImNyZWF0ZWRBdCI6IjIwMjQtMDMtMDdUMTQ6MTg6NDcuNTE2WiJ9LCJpYXQiOjE3MDk4MjExMjd9.V1SVEvjG9lHZiQdrZaU_FBiuzXOpKOiUVgUQ2DQEMEo";
+  const header = {
+    "auth-token": token,
+  };
+  const getHaandleId = `/op/${operatorId}/cpe_table?size=${numOfHaandles}&sort=id&order=desc`; // CHANGE TO HAANDLE I CREATE
+
+  // Device Input Change
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value);
@@ -65,7 +66,6 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
       };
       deviceJson.Devices.push(accounts);
     }
-    //console.log(deviceJson.Devices);
   };
 
   // Descriptions
@@ -155,8 +155,6 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
     return deviceDescriptions[randomIndex];
   };
 
-  //console.log(randomDevice])
-
   // Names
 
   const firstNames: string[] = [
@@ -203,12 +201,6 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
     return `${randomFirstName}'s`;
   };
 
-  //console.log(getRandomDeviceName());
-
-  //const deviceName = getRandomFirstName();
-
-  //console.log(deviceName)
-
   // Randomly generates a serial number
 
   const serialSet: Set<string> = new Set();
@@ -245,8 +237,6 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
     return serialUnique;
   };
 
-  //console.log(serialNumber());
-
   // Age group
 
   const ageGroups = ["UNDER12", "EARLYTEEN", "YOUNGADULT", "NOSHIELD"];
@@ -278,18 +268,16 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
       const response = await axios.get(`${apiURL}${getHaandleId}`, {
         headers: header,
       });
-      //console.log(response.data); // Log entire response
       const responseData = response.data.data;
       const randomIndex = Math.floor(Math.random() * responseData.length);
       const newRandomId = responseData[randomIndex].ID;
-      return newRandomId; // Return the new random ID
+      return newRandomId;
     } catch (error) {
       console.error("Error fetching random ID:", error);
       return null;
     }
   };
 
-  // Call fetchRandomId function when component mounts
   useEffect(() => {
     fetchRandomId();
   }, []);
@@ -307,10 +295,9 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
       alert("Enter the amount of Accounts you want to populate");
     } else {
       const numDevices = parseInt(deviceNum);
-      const threat75Percentage = 0.75; // 75% of data to endpointThreat75
+      const threat75Percentage = 0.75;
 
       for (let i = 0; i < numDevices; i++) {
-        // Fetch a new random ID for each device
         const newRandomId = await fetchRandomId();
 
         const randomDeviceDescription = getRandomDeviceDescription();
@@ -322,10 +309,9 @@ export const Devices: React.FC<DevicesProps> = ({ showAlert, operatorId }) => {
           deviceCategoryId: randomDeviceDescription.cat,
           webFilter: randomAgeGroup,
           rules: [],
-          haandle: newRandomId, // Use the new random ID
+          haandle: newRandomId,
         };
 
-        // Determine the endpoint to use based on random number
         const randomNumber = Math.random();
         const endpoint =
           randomNumber < threat75Percentage

@@ -16,6 +16,14 @@ export const Register: React.FC<RegisterProps> = ({
   showAlert,
   operatorId,
 }) => {
+
+  // State
+
+  const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
+  const [accountNum, setAccountNum] = useState<any>(0);
+
+  // Operator ID
+
   const operators: any[] = [
     { key: 22, operatorIdUrl: "stag-casa-systems.blackdice.io" },
     { key: 23, operatorIdUrl: "stag-aprecomm.blackdice.io" },
@@ -27,12 +35,6 @@ export const Register: React.FC<RegisterProps> = ({
   };
 
   const operatorIdUrl = getOperatorUrl(operatorId);
-
-  const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
-
-  // State
-
-  const [accountNum, setAccountNum] = useState<any>(0);
 
   // Input Change
 

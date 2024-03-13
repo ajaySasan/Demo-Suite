@@ -1,21 +1,29 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
-import "./Global.scss";
 import { Header } from "./ui-layout/Header";
 import { Register } from "./demo-data/Register";
 import { Threats } from "./demo-data/Threats";
 import { Metrics } from "./demo-data/Metrics";
 import { PopUpAlert } from "./PopUpAlert";
-import MetricsTest from "./demo-data/MetricsTest";
-import { Devices } from "./demo-data/DevicesNew";
+import ThreatsAndMetrics from "./demo-data/ThreatAndMetrics";
+import { Devices } from "./demo-data/Devices";
+import "./Global.scss";
 
 function App() {
-  const [seeDetails, setSeeDetails] = useState<boolean>(false);
-  //const [demoDate, setDemoDate] = useState<string>("");
-  const [demoDate, setDemoDate] = useState<string>(
-    new Date().toISOString().substr(0, 10)
-  ); // Changes default date to today
+  // State
   const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
   const [alertContent, setAlertContent] = useState<string>("");
+  const [seeDetails, setSeeDetails] = useState<boolean>(false);
+  const [operatorId, setOperatorId] = useState<any>(1);
+  const [demoDate, setDemoDate] = useState<string>(
+    new Date().toISOString().substr(0, 10)
+  );
+
+  //  Alert Window
+
+  const showAlert = (success: boolean, message: string) => {
+    setAlertWindow(success);
+    setAlertContent(message);
+  };
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -27,16 +35,13 @@ function App() {
     return () => clearTimeout(timer);
   }, [alertWindow]);
 
+  // Demo Date Change
+
   const handleDateChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDemoDate(event.target.value);
   };
 
-  const showAlert = (success: boolean, message: string) => {
-    setAlertWindow(success);
-    setAlertContent(message);
-  };
-
-  const [operatorId, setOperatorId] = useState<any>(1);
+  // Operator ID
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value);
@@ -61,7 +66,7 @@ function App() {
         </div>
 
         <div className="demoButtons">
-          <MetricsTest
+          <ThreatsAndMetrics
             demoDate={demoDate}
             showAlert={showAlert}
             operatorId={operatorId}
@@ -95,7 +100,7 @@ function App() {
                   onChange={handleDateChange}
                 />
               </div>
-              <Register showAlert={showAlert} operatorId={operatorId}/>
+              <Register showAlert={showAlert} operatorId={operatorId} />
               <Devices showAlert={showAlert} operatorId={operatorId} />
               <Threats demoDate={demoDate} showAlert={showAlert} />
               <Metrics demoDate={demoDate} showAlert={showAlert} />
