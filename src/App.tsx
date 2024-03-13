@@ -36,7 +36,7 @@ function App() {
     setAlertContent(message);
   };
 
-  const [operatorId, setOperatorId] = useState<any>(0);
+  const [operatorId, setOperatorId] = useState<any>(1);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value);

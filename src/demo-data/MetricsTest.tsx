@@ -63,7 +63,7 @@ interface ThreatsAndMetrics {
   demoDate: string;
   showAlert: (success: boolean, message: string) => void;
   operatorId: any;
-} 
+}
 
 export const Metrics: React.FC<ThreatsAndMetrics> = ({
   demoDate,
@@ -273,7 +273,6 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
           headers: header,
         }
       );
-
       const deviceData = response.data.data; // Access the 'data' property
 
       const formattedIdsArray = deviceData.map((item: any) => ({
@@ -289,12 +288,12 @@ export const Metrics: React.FC<ThreatsAndMetrics> = ({
   };
 
   useEffect(() => {
-    if (userInputDeviceId !== undefined) {
-      fetchData(userInputDeviceId);
+    if (operatorId !== undefined) {
+      fetchData(operatorId);
     } else {
       fetchData();
     }
-  }, [userInputDeviceId, numIds]); // Fetch data whenever numIds or userInputDeviceId changes
+  }, [operatorId, numIds]); // Fetch data whenever numIds or userInputDeviceId changes
 
   // console.log(idsArray);
 
