@@ -1,6 +1,5 @@
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
-import React from "react";
 
 interface Device {
   ID: number;
@@ -52,22 +51,13 @@ const ThreatsAndMetrics: React.FC<ThreatsAndMetrics> = ({
   showAlert,
   operatorId,
 }) => {
-  
   // States
 
   const [demoMessage, setDemoMessage] = useState<string>("");
   const [demoRunning, setDemoRunning] = useState<boolean>(false);
-  let interval: NodeJS.Timeout;
   const [demoInterval, setDemoInterval] = useState<any>(null);
-  const [numIds, setNumIds] = useState<number>();
   const [idsArray, setIdsArray] = useState<any[]>([]);
-  const [idsArrayMetrics, setIdsArrayMetrics] = useState<any[]>([]);
-  const [threatDataNum, setThreatDate] = useState<number>(0);
-  const [alertWindow, setAlertWindow] = useState<boolean | null>(null);
-  const [userInputDeviceId, setUserInputDeviceId] = useState<
-    number | undefined
-  >();
-
+  let interval: NodeJS.Timeout;
   const [dateFilter, setDateFilter] = useState<DateFilter>({
     past24Hours: 10,
     past7Days: 20,
@@ -261,7 +251,7 @@ const ThreatsAndMetrics: React.FC<ThreatsAndMetrics> = ({
     } else {
       fetchData();
     }
-  }, [operatorId, numIds]);
+  }, [operatorId]);
 
   // Metric Data
 
@@ -376,10 +366,6 @@ const ThreatsAndMetrics: React.FC<ThreatsAndMetrics> = ({
     console.log(threatJson);
   };
 
-  useEffect(() => {
-    fetchData();
-  }, [numIds]);
-
   // List of Threats
 
   const threat: any[] = [
@@ -454,11 +440,13 @@ const ThreatsAndMetrics: React.FC<ThreatsAndMetrics> = ({
 
   // Submit Request
 
-  const randomNumBetween1And100 = () => {
-    return Math.floor(Math.random() * 100) + 1;
-  };
-
   const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    if (!idsArray.length) {
+      alert(
+        "No Device Id available. Please wait for data to load or try a different operator."
+      );
+      return;
+    }
     const numMetrics = 24;
     const totalPercentage = Object.values(initialThreatPercentages).reduce(
       (acc, val) => acc + val,
@@ -583,29 +571,26 @@ const ThreatsAndMetrics: React.FC<ThreatsAndMetrics> = ({
 
   // Demo message
 
-  const startDemo: any = {
-    preventDefault: () => {},
-
-    target: {
-      value: "",
-    },
-  };
-
   const startDemoLoop = () => {
-    setDemoRunning(true);
-    handleSubmit(startDemo);
-    setDemoMessage("Demo has begun");
+  if (!idsArray.length) {
+    alert(
+      "No Device Id available. Please wait for data to load or try a different operator."
+    );
+    return;
+  }
+  setDemoRunning(true);
+  setDemoMessage("Demo has begun");
 
-    console.log("Entering Demo mode");
-    const newInterval = setInterval(handleSubmit, 4000);
-    setDemoInterval(newInterval);
+  console.log("Entering Demo mode");
+  const newInterval = setInterval(handleSubmit, 4000);
+  setDemoInterval(newInterval);
 
-    setTimeout(() => {
-      clearInterval(interval);
-      setDemoRunning(false);
-      console.log("Demo stopped after 60 minutes.");
-    }, 60 * 60 * 1000);
-  };
+  setTimeout(() => {
+    clearInterval(interval);
+    setDemoRunning(false);
+    console.log("Demo stopped after 60 minutes.");
+  }, 60 * 60 * 1000);
+};
 
   const stopDemoLoop = () => {
     if (demoInterval) {
