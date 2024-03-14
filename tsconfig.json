@@ -22,9 +22,5 @@
   },
   "include": [
     "src"
-  ],
-  "typedocOptions": {
-    "entryPoints": ["./src/demo-data/Register.tsx"],
-    "out": "docs"
-  }
+  ]
 }
