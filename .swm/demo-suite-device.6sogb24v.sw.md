@@ -1,6 +1,8 @@
 ---
-title: Add a Device
+title: Demo Suite - Device
 ---
+# Add a Device
+
 <SwmSnippet path="/src/demo-data/Devices.tsx" line="304">
 
 ---
