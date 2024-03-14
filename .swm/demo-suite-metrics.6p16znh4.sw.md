@@ -1,7 +1,7 @@
 ---
 title: Demo Suite - Metrics
 ---
-# Analyse Metrics of Incoming Threats and Data
+# Metrics of Incoming Threats and Data
 
 <SwmSnippet path="/src/demo-data/ThreatAndMetrics.tsx" line="486">
 
