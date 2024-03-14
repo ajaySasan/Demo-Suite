@@ -9,6 +9,7 @@ app_version: 1.23.9
 1. [Demo Suite - Account](demo-suite-account.bro308ay.sw.md)
 2. [Demo Suite - Device](demo-suite-device.6sogb24v.sw.md)
 3. [Demo Suite - Threats](demo-suite-threats.jqulhh41.sw.md)
+4. [Demo Suite - Metrics](demo-suite-metrics.6p16znh4.sw.md)
 
 
 <br/>

@@ -46,12 +46,12 @@ Navigate to this path to see the POST request <SwmPath>[src/demo-data/Register.t
 
 ## EXAMPLE :
 
-> <SwmToken path="/src/demo-data/Register.tsx" pos="250:1:1" line-data="          email,">`email`</SwmToken> : [Islaperry1998@demo.co.uk](mailto:Islaperry1998@demo.co.uk),
+> <SwmToken path="/src/demo-data/Register.tsx" pos="250:1:1" line-data="          email,">`email`</SwmToken> : "[Islaperry1998@demo.co.uk](mailto:Islaperry1998@demo.co.uk)",
 >
-> <SwmToken path="/src/demo-data/Register.tsx" pos="251:1:1" line-data="          pass,">`pass`</SwmToken> : GerOI53£$tred99,
+> <SwmToken path="/src/demo-data/Register.tsx" pos="251:1:1" line-data="          pass,">`pass`</SwmToken> : "GerOI53£$tred99",
 >
-> <SwmToken path="/src/demo-data/Register.tsx" pos="252:1:1" line-data="          serialNumber: serialNum,">`serialNumber`</SwmToken> : C5:9C:DD:15:EC:A3,
+> <SwmToken path="/src/demo-data/Register.tsx" pos="252:1:1" line-data="          serialNumber: serialNum,">`serialNumber`</SwmToken> : "C5:9C:DD:15:EC:A3",
 >
-> <SwmToken path="/src/demo-data/Register.tsx" pos="253:1:1" line-data="          referer: operatorIdUrl,">`referer`</SwmToken> : [dev.blackdice.io](http://dev.blackdice.io),
+> <SwmToken path="/src/demo-data/Register.tsx" pos="253:1:1" line-data="          referer: operatorIdUrl,">`referer`</SwmToken> : "[dev.blackdice.io](http://dev.blackdice.io)",
 
 <SwmMeta version="3.0.0" repo-id="Z2l0aHViJTNBJTNBRGVtby1TdWl0ZSUzQSUzQWFqYXlTYXNhbg==" repo-name="Demo-Suite"><sup>Powered by [Swimm](https://app.swimm.io/)</sup></SwmMeta>
