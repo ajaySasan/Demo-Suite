@@ -6,8 +6,9 @@ app_version: 1.23.9
 ---
 
 <!-- Steps - Do not remove this comment -->
-1. [Add a Device](add-a-device.6sogb24v.sw.md)
-2. [Create an Account](create-an-account.bro308ay.sw.md)
+1. [Demo Suite - Account](demo-suite-account.bro308ay.sw.md)
+2. [Demo Suite - Device](demo-suite-device.6sogb24v.sw.md)
+3. [Demo Suite - Threats](demo-suite-threats.jqulhh41.sw.md)
 
 
 <br/>

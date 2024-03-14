@@ -62,23 +62,23 @@ Navigate to this path to see the POST request <SwmPath>[src/demo-data/Devices.ts
 
 > The handle assigns the new device to the user's account.
 
-\_________________________________________________________________________________________________________________\_
+&nbsp;
 
 ## EXAMPLE :
 
-> <SwmToken path="/src/demo-data/Devices.tsx" pos="305:1:1" line-data="          name: `${getRandomDeviceName()} ${randomDeviceDescription.type}`,">`name`</SwmToken> : Isla's <SwmToken path="/src/demo-data/Devices.tsx" pos="75:18:18" line-data="    { vendor: &quot;Apple Inc.&quot;, type: &quot;iPhone 5S&quot;, cat: 1 },">`iPhone`</SwmToken> 14 Pro Max
+> <SwmToken path="/src/demo-data/Devices.tsx" pos="305:1:1" line-data="          name: `${getRandomDeviceName()} ${randomDeviceDescription.type}`,">`name`</SwmToken> : Isla's <SwmToken path="/src/demo-data/Devices.tsx" pos="75:18:18" line-data="    { vendor: &quot;Apple Inc.&quot;, type: &quot;iPhone 5S&quot;, cat: 1 },">`iPhone`</SwmToken> 14 Pro Max,
 >
-> <SwmToken path="/src/demo-data/Devices.tsx" pos="306:1:1" line-data="          description: randomDeviceDescription.type,">`description`</SwmToken> : iPhone 14 Pro Max
+> <SwmToken path="/src/demo-data/Devices.tsx" pos="306:1:1" line-data="          description: randomDeviceDescription.type,">`description`</SwmToken> : iPhone 14 Pro Max,
 >
-> <SwmToken path="/src/demo-data/Devices.tsx" pos="307:1:1" line-data="          macAddress: serialNumber(),">`macAddress`</SwmToken> : 1C:BD:B8:D8:97:DC
+> <SwmToken path="/src/demo-data/Devices.tsx" pos="307:1:1" line-data="          macAddress: serialNumber(),">`macAddress`</SwmToken> : 1C:BD:B8:D8:97:DC,
 >
-> <SwmToken path="/src/demo-data/Devices.tsx" pos="308:1:1" line-data="          phoneNumber: phoneNumber,">`phoneNumber`</SwmToken> : 07288687201
+> <SwmToken path="/src/demo-data/Devices.tsx" pos="308:1:1" line-data="          phoneNumber: phoneNumber,">`phoneNumber`</SwmToken> : 07288687201,
 >
-> <SwmToken path="/src/demo-data/Devices.tsx" pos="309:1:1" line-data="          deviceCategoryId: randomDeviceDescription.cat,">`deviceCategoryId`</SwmToken> : 1
+> <SwmToken path="/src/demo-data/Devices.tsx" pos="309:1:1" line-data="          deviceCategoryId: randomDeviceDescription.cat,">`deviceCategoryId`</SwmToken> : 1,
 >
-> <SwmToken path="/src/demo-data/Devices.tsx" pos="310:1:1" line-data="          webFilter: randomAgeGroup,">`webFilter`</SwmToken> : EARLYTEEN
+> <SwmToken path="/src/demo-data/Devices.tsx" pos="310:1:1" line-data="          webFilter: randomAgeGroup,">`webFilter`</SwmToken> : EARLYTEEN,
 >
-> <SwmToken path="/src/demo-data/Devices.tsx" pos="311:1:1" line-data="          rules: [],">`rules`</SwmToken> : null
+> <SwmToken path="/src/demo-data/Devices.tsx" pos="311:1:1" line-data="          rules: [],">`rules`</SwmToken> : null,
 >
 > <SwmToken path="/src/demo-data/Devices.tsx" pos="312:1:1" line-data="          haandle: newRandomId,">`haandle`</SwmToken> : 10825
 
