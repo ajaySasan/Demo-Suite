@@ -26,6 +26,8 @@ export const Register: React.FC<RegisterProps> = ({
   const operators: any[] = [
     { key: 22, operatorIdUrl: "stag-casa-systems.blackdice.io" },
     { key: 23, operatorIdUrl: "stag-aprecomm.blackdice.io" },
+    { key: 24, operatorIdUrl: "stag-gds.blackdice.io"},
+    { key: 25, operatorIdUrl: "stag-a1.blackdice.io"},
   ];
 
   const getOperatorUrl = (id: number) => {
