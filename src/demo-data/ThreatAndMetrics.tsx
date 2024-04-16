@@ -67,7 +67,7 @@ const ThreatsAndMetrics: React.FC<ThreatsAndMetrics> = ({
 
   // Database API
 
-  const apiURL = "https://apibeta.blackdice.io";
+  const apiURL = "https://apidev.blackdice.io";
   const endpointMetrics = "/svc/mock/create-many-device-metrics";
   const endpointThreat = "/svc/mock/create-many-threats";
   const token =
